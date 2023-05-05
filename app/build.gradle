@@ -50,5 +50,6 @@ dependencies {
 
     implementation project(':base-compose')
     implementation project(':mylibrary')
+    implementation project(':main')
 
 }

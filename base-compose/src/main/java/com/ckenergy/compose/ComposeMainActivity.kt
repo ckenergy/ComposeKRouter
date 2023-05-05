@@ -1,4 +1,4 @@
-package com.ckenergy.compose.plugin
+package com.ckenergy.compose
 
 import androidx.compose.runtime.Composable
 import com.ckenergy.compose.BaseComposeActivity

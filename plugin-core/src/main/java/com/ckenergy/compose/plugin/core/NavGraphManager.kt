@@ -1,14 +1,22 @@
 package com.ckenergy.compose.plugin.core
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
+import androidx.core.net.toUri
 import androidx.navigation.*
 import com.google.accompanist.navigation.animation.AnimatedComposeNavigator
 import com.google.accompanist.navigation.animation.composable
+
+
+//公用一个NavHostController 全局获取当前可跳转
+@SuppressLint("CompositionLocalNaming")
+val AppNavController = compositionLocalOf<NavHostController> { error("NavHostController error") }
 
 /**
  * @author ckenergy
@@ -19,6 +27,10 @@ import com.google.accompanist.navigation.animation.composable
 object NavGraphManager {
 
     private val graphContainer = hashSetOf<ModuleBuilder>()
+
+    var pluginLoader: IPluginLoader? = null
+
+    var notFindPage: (@Composable (String) -> Unit)? = null
 
     private lateinit var builder: NavGraphBuilder
 
@@ -56,6 +68,24 @@ object NavGraphManager {
         }
     }
 
+    fun navigate(controller: NavController, route: String) {
+        val request = NavDeepLinkRequest.Builder.fromUri(NavDestination.createRoute(route).toUri()).build()
+        val match = controller.graph.matchDeepLink(request)
+        if (match == null) {
+            pluginLoader?.load(route, controller, builder)
+        }
+        val match1 = controller.graph.matchDeepLink(request)
+        if (match1 == null) {
+            controller.navigate(NOT_FIND_ROUTE +route)
+        }else {
+            controller.navigate(route)
+        }
+    }
+
+}
+
+fun NavController.navigate1(route: String){
+    NavGraphManager.navigate(this, route)
 }
 
 fun composeNav(action: NavGraphManager.() -> Unit) {
@@ -90,20 +120,22 @@ fun NavGraphBuilder.composablePlugin(
     deepLinks: List<NavDeepLink> = emptyList(),
     content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
 ) {
-    graph.addDestination(
-        AnimatedComposeNavigator.Destination(
-            provider[AnimatedComposeNavigator::class],
-            content
-        ).apply {
-            this.route = route
-            arguments.forEach { (argumentName, argument) ->
-                addArgument(argumentName, argument)
+    val match = graph.matchDeepLink(NavDeepLinkRequest.Builder.fromUri(NavDestination.createRoute(route).toUri()).build())
+    if (match == null)
+        graph.addDestination(
+            AnimatedComposeNavigator.Destination(
+                provider[AnimatedComposeNavigator::class],
+                content
+            ).apply {
+                this.route = route
+                arguments.forEach { (argumentName, argument) ->
+                    addArgument(argumentName, argument)
+                }
+                deepLinks.forEach { deepLink ->
+                    addDeepLink(deepLink)
+                }
             }
-            deepLinks.forEach { deepLink ->
-                addDeepLink(deepLink)
-            }
-        }
-    )
+        )
 }
 
 /**

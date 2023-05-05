@@ -1,30 +1,18 @@
 package com.ckenergy.compose
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.navigation.NavHostController
+import com.ckenergy.compose.plugin.core.AppNavController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.ckenergy.compose.MainActions
 
 /**
  * Created by chengkai on 2022/11/28.
  */
-
-//公用一个NavHostController 全局获取当前可跳转
-@SuppressLint("CompositionLocalNaming")
-val AppNavController = compositionLocalOf<NavHostController> { error("NavHostController error") }
 
 //配置好的跳转路由
 val LocalMainActions = compositionLocalOf<MainActions> { error("MainActions error") }

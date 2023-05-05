@@ -12,8 +12,6 @@ sealed class ComposeRouterMapper(url: String): Router("compose/$url") {
 
     object Library: ComposeRouterMapper("library")
 
-    object Empty : ComposeRouterMapper("empty")
-
 }
 
 sealed class Router(val url: String)

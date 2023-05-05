@@ -1,4 +1,4 @@
-package com.ckenergy.compose.common
+package com.ckenergy.compose.plugin
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
  * Created by chengkai on 2022/11/8.
  */
 @Composable
-fun EmptyPage() {
+fun NotFindPage(route: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top) {
-        Text(modifier = Modifier.padding(10.dp), text = "")
+        Text(modifier = Modifier.padding(10.dp), text = "$route route is error")
     }
 }

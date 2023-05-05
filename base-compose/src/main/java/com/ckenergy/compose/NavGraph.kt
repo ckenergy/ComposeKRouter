@@ -11,15 +11,16 @@ import com.ckenergy.compose.safeargs.service.*
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.ckenergy.compose.plugin.core.NavGraphManager
 import com.ckenergy.compose.common.ComposeRouterMapper
+import com.ckenergy.compose.plugin.core.AppNavController
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun NavGraph(
-    startDestination: String = ComposeRouterMapper.Empty.url,
+    startDestination: String = ComposeRouterMapper.Main.url,
     finishActivity: (Boolean) -> Unit = {}
 ) {
     val navController = AppNavController.current
-    val route = startDestination.ifBlank { ComposeRouterMapper.Empty.url }
+    val route = startDestination.ifBlank { ComposeRouterMapper.Main.url }
 
     val springSpec = spring(
         stiffness = Spring.StiffnessMediumLow,
