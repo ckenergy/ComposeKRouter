@@ -1,5 +1,6 @@
-package com.ckenergy.compose.plugin
+package com.ckenergy.compose.main
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ckenergy.compose.MyContent
+import com.ckenergy.compose.plugin.core.AppNavController
 
 /**
  * @author ckenergy
@@ -20,6 +22,7 @@ import com.ckenergy.compose.MyContent
  */
 @Composable
 fun MainPage(start: () -> Unit) {
+    Log.d("MainPage", ""+ AppNavController.current.currentDestination?.route)
     MyContent(
         modifier = Modifier.background(Color.White),
         title = "Main"

@@ -49,7 +49,7 @@ dependencies {
     implementation(Libs.material)
 
     implementation project(':base-compose')
-    implementation project(':mylibrary')
+//    implementation project(':mylibrary')
     implementation project(':main')
 
 }

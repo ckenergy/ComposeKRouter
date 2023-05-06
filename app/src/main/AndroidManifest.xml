@@ -13,7 +13,7 @@
         android:theme="@style/Theme.ComposePlugIn"
         tools:targetApi="31">
         <activity
-            android:name="com.ckenergy.compose.ComposeMainActivity"
+            android:name=".ComposeMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -10,11 +10,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        google { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/public' }
     }
 }
 rootProject.name = "ComposePlugIn"
 include ':app'
 include ':base-compose'
-include ':mylibrary'
+include ':other'
 include ':plugin-core'
 include ':main'

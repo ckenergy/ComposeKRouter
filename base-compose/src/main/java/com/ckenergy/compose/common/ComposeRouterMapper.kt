@@ -10,7 +10,7 @@ sealed class ComposeRouterMapper(url: String): Router("compose/$url") {
     object Main: ComposeRouterMapper("main")
     object Second: ComposeRouterMapper("second")
 
-    object Library: ComposeRouterMapper("library")
+    object Other: ComposeRouterMapper("library")
 
 }
 

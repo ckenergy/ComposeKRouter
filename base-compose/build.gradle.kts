@@ -54,7 +54,7 @@ dependencies {
     implementation(Libs.material)
 
     val composeBom = platform(Libs.bom_compose)
-    implementation(composeBom)
+    api(composeBom)
 
     api(Libs.activity_compose)
     api(Libs.animation_compose)

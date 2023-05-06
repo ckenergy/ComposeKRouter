@@ -4,9 +4,7 @@ import android.app.Application
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import com.ckenergy.compose.main.mainNavGraph
-import com.ckenergy.compose.mylibrary.libNavGraph
 import com.ckenergy.compose.plugin.core.IPluginLoader
-import com.ckenergy.compose.plugin.core.baseNavGraph
 import com.ckenergy.compose.plugin.core.composeNav
 
 /**
@@ -25,13 +23,12 @@ class MyApplication: Application() {
         composeNav {
             pluginLoader = object : IPluginLoader {
                 override fun load(route: String, controller: NavController, builder: NavGraphBuilder) {
-                    composablePlugIn(controller, libNavGraph)
+//                    composablePlugIn(controller, libNavGraph)
                 }
             }
             notFindPage = { route: String -> NotFindPage(route) }
             addModules(mainNavGraph)
 //            addModules(libNavGraph)
-            addModules(baseNavGraph)
         }
     }
 

@@ -1,8 +1,6 @@
 package com.ckenergy.compose.main
 
 import com.ckenergy.compose.common.ComposeRouterMapper
-import com.ckenergy.compose.plugin.MainPage
-import com.ckenergy.compose.plugin.SecondPage
 import com.ckenergy.compose.plugin.core.composeModules
 import com.ckenergy.compose.plugin.core.navigate1
 
@@ -14,7 +12,7 @@ val mainNavGraph = composeModules { controller ->
     }
     composable(ComposeRouterMapper.Second.url) {
         SecondPage {
-            controller.navigate1(ComposeRouterMapper.Library.url)
+            controller.navigate1(ComposeRouterMapper.Other.url)
         }
     }
 }

@@ -12,6 +12,7 @@ import androidx.core.net.toUri
 import androidx.navigation.*
 import com.google.accompanist.navigation.animation.AnimatedComposeNavigator
 import com.google.accompanist.navigation.animation.composable
+import java.net.URLEncoder
 
 
 //公用一个NavHostController 全局获取当前可跳转
@@ -21,7 +22,7 @@ val AppNavController = compositionLocalOf<NavHostController> { error("NavHostCon
 /**
  * @author ckenergy
  * @date 2023/2/15
- * @desc compose配置的路由管理，不同的module可以通过实现[composeModules]接口往里面配置需要的页面路由，
+ * @desc compose配置的路由管理，不同的module可以通过实现[composeModules]方法往里面配置需要的页面路由，
  * 然后在 [Application.onCreate]添加[composeModules] 方法往里面添加各模块实现了[composeModules]接口的实例
  */
 object NavGraphManager {
@@ -33,6 +34,10 @@ object NavGraphManager {
     var notFindPage: (@Composable (String) -> Unit)? = null
 
     private lateinit var builder: NavGraphBuilder
+
+    init {
+        addModules(baseNavGraph)
+    }
 
     /**
      * 添加模块
@@ -71,12 +76,12 @@ object NavGraphManager {
     fun navigate(controller: NavController, route: String) {
         val request = NavDeepLinkRequest.Builder.fromUri(NavDestination.createRoute(route).toUri()).build()
         val match = controller.graph.matchDeepLink(request)
-        if (match == null) {
+        if (match == null) {//动态加载
             pluginLoader?.load(route, controller, builder)
         }
         val match1 = controller.graph.matchDeepLink(request)
         if (match1 == null) {
-            controller.navigate(NOT_FIND_ROUTE +route)
+            controller.navigate(NOT_FIND_ROUTE+URLEncoder.encode(route, "utf-8"))
         }else {
             controller.navigate(route)
         }
