@@ -5,6 +5,7 @@ import com.ckenergy.compose.plugin.core.composeModules
 import com.ckenergy.compose.plugin.core.navigate1
 
 val mainNavGraph = composeModules { controller ->
+    packageName = "com.ckenergy.compose.main"
     composable(ComposeRouterMapper.Main.url) {
         MainPage {
             controller.navigate1(ComposeRouterMapper.Second.url)

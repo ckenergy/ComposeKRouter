@@ -11,6 +11,8 @@ typealias ModuleBuilder = NavGraphContainer.(NavController) -> Unit
 class NavGraphContainer {
     internal val list = arrayListOf<NavGraphDestination>()
 
+    var packageName = ""
+
     fun composable(
         route: String,
         arguments: List<NamedNavArgument> = emptyList(),

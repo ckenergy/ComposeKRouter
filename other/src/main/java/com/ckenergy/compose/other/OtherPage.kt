@@ -39,14 +39,6 @@ fun OtherPage(start: () -> Unit) {
                         start()
                     }
                     .padding(10.dp))
-
-            Text(text = NavGraphManager.testString,
-                fontSize = 20.sp,
-                modifier = Modifier
-                    .padding(10.dp)
-                    .clickable {
-                    }
-                    .padding(10.dp))
         }
     }
 

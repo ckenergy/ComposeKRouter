@@ -9,6 +9,7 @@ import android.content.res.AssetManager
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
+import androidx.compose.runtime.Composable
 import dalvik.system.DexClassLoader
 import java.lang.reflect.Method
 
@@ -55,6 +56,15 @@ object PluginManager {
             Log.d(TAG, "dynamic loading of apk failed")
             e.printStackTrace()
         }
+    }
+
+    @Composable
+    fun getPluginString() {
+        val controller = AppNavController.current
+        val route = controller.currentDestination?.route ?: return
+        val pkg = NavGraphManager.findPackageName(route) ?: return
+        val pluginInfo = getPluginInfo(pkg) ?: return
+
     }
 
 }

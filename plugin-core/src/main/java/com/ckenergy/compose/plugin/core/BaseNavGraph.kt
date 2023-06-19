@@ -10,6 +10,7 @@ const val NOT_FIND_ROUTE = "Not_find_route="
  * @desc 默认路由配置
  */
 val baseNavGraph = composeModules {
+    packageName = "com.ckenergy.compose.plugin.core"
     composable(
         "$NOT_FIND_ROUTE{args}", arguments = listOf(
         navArgument("args") {

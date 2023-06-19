@@ -1,1 +1,0 @@
-/Users/ckenergy/AndroidStudioProjects/ComposePlugIn/buildSrc/build/classes/kotlin/main/Libs.class:/Users/ckenergy/AndroidStudioProjects/ComposePlugIn/buildSrc/build/classes/kotlin/main/Versions.class

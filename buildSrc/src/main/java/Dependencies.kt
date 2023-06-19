@@ -40,7 +40,6 @@ object Libs {
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}"
     const val retrofit_gson = "com.squareup.retrofit2:converter-gson:${Versions.retrofitVersion}"
     const val retrofit_rxjava = "com.squareup.retrofit2:adapter-rxjava2:${Versions.retrofitVersion}"
-    //    const val koin = "com.squareup.okhttp3:logging-interceptor:$${Versions.retrofitLogInterceptorVersion}"
 
     const val bom_compose = "androidx.compose:compose-bom:2023.01.00"
     const val foundation_compose = "androidx.compose.foundation:foundation"

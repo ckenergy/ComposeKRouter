@@ -29,6 +29,8 @@ object NavGraphManager {
 
     private val graphContainer = hashSetOf<ModuleBuilder>()
 
+    val routeMap = hashMapOf<String, List<NavGraphDestination>>()
+
     var pluginLoader: IPluginLoader? = null
 
     var notFindPage: (@Composable (String) -> Unit)? = null
@@ -53,10 +55,8 @@ object NavGraphManager {
     fun composable(builder: NavGraphBuilder, controller: NavController) {
         this.builder = builder
         graphContainer.forEach {
-            val container = NavGraphContainer()
-            it(container, controller)
-            container.list.forEach { it1 ->
-                builder.composableHorizontal(it1.route, it1.arguments, content = it1.content)
+            buildNavGraph(controller, it) { it1 ->
+                NavGraphManager.builder.composablePlugin(controller.graph, it1.route, it1.arguments, content = it1.content)
             }
         }
     }
@@ -66,11 +66,29 @@ object NavGraphManager {
      */
     @OptIn(ExperimentalAnimationApi::class)
     fun composablePlugIn(controller: NavController, compose: ModuleBuilder) {
+        buildNavGraph(controller, compose) {
+            builder.composablePlugin(controller.graph, it.route, it.arguments, content = it.content)
+        }
+    }
+
+    private fun buildNavGraph(controller: NavController, compose: ModuleBuilder, action: (NavGraphDestination) -> Unit) {
         val container = NavGraphContainer()
         compose(container, controller)
+        routeMap[container.packageName] = container.list
         container.list.forEach { it1 ->
-            builder.composablePlugin(controller.graph, it1.route, it1.arguments, content = it1.content)
+            action(it1)
         }
+    }
+
+    fun findPackageName(route: String): String? {
+        routeMap.forEach {
+            val match = it.value.find { it1 ->
+                it1.route == route
+            }
+            if (match != null)
+                return it.key
+        }
+        return null
     }
 
     fun navigate(controller: NavController, route: String) {
