@@ -3,7 +3,7 @@ package com.ckenergy.compose.plugin
 import android.app.Application
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import com.ckenergy.compose.main.mainNavGraph
+import com.ckenergy.compose.main.NavGraph
 import com.ckenergy.compose.plugin.core.IPluginLoader
 import com.ckenergy.compose.plugin.core.composeNav
 
@@ -27,7 +27,7 @@ class MyApplication: Application() {
                 }
             }
             notFindPage = { route: String -> NotFindPage(route) }
-            addModules(mainNavGraph)
+            addModules(NavGraph)
 //            addModules(libNavGraph)
         }
     }

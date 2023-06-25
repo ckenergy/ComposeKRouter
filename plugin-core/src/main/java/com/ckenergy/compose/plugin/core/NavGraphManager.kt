@@ -107,7 +107,7 @@ object NavGraphManager {
 
 }
 
-fun NavController.navigate1(route: String){
+fun NavController.navigateRoute(route: String){
     NavGraphManager.navigate(this, route)
 }
 

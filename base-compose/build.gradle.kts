@@ -69,7 +69,6 @@ dependencies {
 
     api(Libs.navigation_animation_compose)
     api(Libs.flowlayout_compose)
-    api(Libs.safeArgs_service)
 
     api(project(":plugin-core"))
 

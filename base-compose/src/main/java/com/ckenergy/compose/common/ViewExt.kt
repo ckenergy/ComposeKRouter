@@ -26,7 +26,6 @@ import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
-import com.ckenergy.compose.safeargs.service.*
 import com.google.accompanist.navigation.animation.composable
 
 
@@ -59,29 +58,6 @@ fun MainButton(text: String, modifier: Modifier, radius: Dp = 10.dp, onClick: ()
             color = Color.White,
             fontSize = 18.sp
         )
-    }
-}
-
-@ExperimentalAnimationApi
-fun NavGraphBuilder.composableSafeArgs(route: String, content: @Composable (NavBackStackEntry, SafeArgsParser) -> Unit) {
-    composableHorizontal(
-        SafeArgsSource.getRoute(route),
-        arguments = SafeArgsSource.getArguments()
-    ) {
-        val parser = it.parseSafeArgs()
-        content(it, parser)
-    }
-}
-
-@ExperimentalAnimationApi
-inline fun <reified T> NavGraphBuilder.composable(crossinline content: @Composable (NavBackStackEntry, T?) -> Unit) {
-    val provider = DestinationManager.getDestinationProvider(T::class.java)
-    composableHorizontal(
-        route = provider.getRoute(),
-        arguments = provider.getArguments()
-    ) {
-        val deviceFilterBean: T? = it.parseArguments()
-        content(it, deviceFilterBean)
     }
 }
 

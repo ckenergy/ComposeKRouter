@@ -5,13 +5,11 @@ package com.ckenergy.compose.common
  * @date 2023/2/15
  * @desc
  */
-sealed class ComposeRouterMapper(url: String): Router("compose/$url") {
+object ComposeRouterMapper {
 
-    object Main: ComposeRouterMapper("main")
-    object Second: ComposeRouterMapper("second")
+    const val Main = "compose/main"
 
-    object Other: ComposeRouterMapper("library")
+    const val Second = "compose/second"
+    const val Other = "compose/library"
 
 }
-
-sealed class Router(val url: String)

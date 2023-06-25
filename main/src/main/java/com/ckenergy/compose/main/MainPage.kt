@@ -13,16 +13,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ckenergy.compose.MyContent
+import com.ckenergy.compose.common.ComposeRouterMapper
 import com.ckenergy.compose.plugin.core.AppNavController
+import com.ckenergy.compose.plugin.core.KRouter
+import com.ckenergy.compose.plugin.core.navigateRoute
 
 /**
  * @author ckenergy
  * @date 2023/5/4
  * @desc
  */
+@KRouter(ComposeRouterMapper.Main)
 @Composable
-fun MainPage(start: () -> Unit) {
-    Log.d("MainPage", ""+ AppNavController.current.currentDestination?.route)
+fun MainPage() {
+    val controller = AppNavController.current
+    Log.d("MainPage", ""+ controller.currentDestination?.route)
     MyContent(
         modifier = Modifier.background(Color.White),
         title = "Main"
@@ -31,7 +36,7 @@ fun MainPage(start: () -> Unit) {
             Text(text = "start", fontSize = 20.sp, modifier = Modifier
                 .padding(10.dp)
                 .clickable {
-                    start()
+                    controller.navigateRoute(ComposeRouterMapper.Second)
                 }
                 .padding(10.dp))
         }

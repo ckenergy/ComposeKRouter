@@ -97,7 +97,7 @@ internal fun BaseComposeActivity.setMyContent(
 fun MyAppBar(
     title: String,
     rightButton: @Composable BoxScope.() -> Unit = {},
-    onBack: () -> Unit = LocalMainActions.current.upPress
+    onBack: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier

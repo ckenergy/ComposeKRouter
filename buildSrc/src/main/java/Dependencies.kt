@@ -11,7 +11,7 @@ object Versions {
     const val safeArgs = "1.0.2"
     const val room = "2.4.3"
 
-    const val composeCompiler = "1.4.1"
+    const val composeCompiler = "1.4.3"
 
 }
 

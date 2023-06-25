@@ -12,7 +12,7 @@ class ComposeMainActivity : BaseComposeActivity() {
 
     @Composable
     override fun Content() {
-        NavGraph(ComposeRouterMapper.Other.url) {
+        NavGraph(ComposeRouterMapper.Other) {
             finish()
         }
     }

@@ -1,7 +1,11 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
 }
+
+android.sourceSets.all {
+    java.srcDir("build/generated/ksp/${name}/kotlin/") }
 
 android {
     namespace = "com.ckenergy.compose.main"
@@ -41,6 +45,10 @@ android {
     }
 }
 
+ksp {
+    arg("KROUTER_PACKAGE", "com.ckenergy.compose.main")
+}
+
 dependencies {
 
     implementation(Libs.core_ktx)
@@ -49,4 +57,5 @@ dependencies {
     implementation(Libs.material)
 
     implementation (project(":base-compose"))
+    ksp(project(":compiler"))
 }

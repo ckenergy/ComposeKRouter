@@ -1,7 +1,6 @@
 package com.ckenergy.compose.main
 
 import android.content.Context
-import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -14,16 +13,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.ckenergy.compose.MyContent
+import com.ckenergy.compose.common.ComposeRouterMapper
 import com.ckenergy.compose.plugin.core.AppNavController
+import com.ckenergy.compose.plugin.core.KRouter
 import com.ckenergy.compose.plugin.core.ModuleBuilder
 import com.ckenergy.compose.plugin.core.NavGraphManager
 import com.ckenergy.compose.plugin.core.PluginManager
+import com.ckenergy.compose.plugin.core.navigateRoute
 import java.io.File
 
 /**
@@ -31,8 +31,9 @@ import java.io.File
  * @date 2023/5/4
  * @desc
  */
+@KRouter(ComposeRouterMapper.Second)
 @Composable
-fun SecondPage(start: () -> Unit) {
+fun SecondPage() {
     Log.d("SecondPage", ""+ AppNavController.current.currentDestination?.route)
     MyContent(
         modifier = Modifier.background(Color.White),
@@ -51,7 +52,7 @@ fun SecondPage(start: () -> Unit) {
             Text(text = "next", fontSize = 20.sp, modifier = Modifier
                 .padding(10.dp)
                 .clickable {
-                    start()
+                    controller.navigateRoute(ComposeRouterMapper.Other)
                 }
                 .padding(10.dp))
         }
