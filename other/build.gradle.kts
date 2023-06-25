@@ -16,7 +16,12 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
+    lintOptions {
+        disable("Instantiatable")
+    }
     buildTypes {
         release {
             isMinifyEnabled = false

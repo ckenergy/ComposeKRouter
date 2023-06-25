@@ -26,7 +26,7 @@ class MyApplication: Application() {
                 }
             }
             notFindPage = { route: String -> NotFindPage(route) }
-            addModules(libNavGraph)
+            addModules(navGraph)
         }
     }
 

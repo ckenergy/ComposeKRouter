@@ -56,7 +56,7 @@ object NavGraphManager {
         this.builder = builder
         graphContainer.forEach {
             buildNavGraph(controller, it) { it1 ->
-                NavGraphManager.builder.composablePlugin(controller.graph, it1.route, it1.arguments, content = it1.content)
+                NavGraphManager.builder.composable(it1.route, it1.arguments, content = it1.content)
             }
         }
     }

@@ -73,7 +73,7 @@ private fun addRoute(context: Context, controller: NavController) {
     try {
         val cls =
             PluginManager.getPluginInfo(Constants.OTHER_PKG)?.pluginDexClassLoader!!.loadClass(
-                Constants.OTHER_PKG+".LibNavGraphKt"
+                Constants.OTHER_PKG+".NavGraphKt"
             )
         val graph = cls.declaredMethods.first().invoke(null) as ModuleBuilder
         NavGraphManager.composablePlugIn(controller, graph)
