@@ -12,10 +12,12 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.ksp.writeTo
 import java.io.File
 
-class KRouterProcessorProvider : SymbolProcessorProvider {
+private const val TAG = "ParameterProcessor"
+
+class ParameterProcessorProvider : SymbolProcessorProvider {
 
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-        return KRouterProcessor(
+        return ParameterProcessor(
             codeGenerator = environment.codeGenerator,
             logger = environment.logger,
             options = environment.options
@@ -23,9 +25,7 @@ class KRouterProcessorProvider : SymbolProcessorProvider {
     }
 }
 
-private const val TAG = "KRouterProcessor"
-
-class KRouterProcessor(
+class ParameterProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
     private val options: Map<String, String>
@@ -50,37 +50,37 @@ class KRouterProcessor(
         }
 
         val packageName = options.findPackageName(logger)
-        val funMap = hashMapOf<KSFunctionDeclaration, ClassName?>()
 
         symbols.forEach {
             if (it.parameters.isNotEmpty()) {
                 val pair = it.getClassFullName()
-                funMap[it] = ClassName.bestGuess("${pair.first}.${pair.second}")
-            }else {
-                funMap[it] = null
+                val composePackageName = pair.first
+                val className = pair.second
+
+                checkFile(composePackageName, "$className.kt")
+                val file = codeGenerator.createNewFile(
+                    Dependencies(false, it.containingFile!!),
+                    composePackageName,
+                    className
+                )
+
+                file.bufferedWriter().use { writer ->
+                    try {
+                        val builder = StringBuilder()
+                        val classCreate = ParameterCreatorProxy(builder)
+                        val typeSpec = classCreate.generateJavaCode(
+                            className, it.parameters
+                        )
+                        val fileSpec = FileSpec.get(packageName, typeSpec)
+                        fileSpec.writeTo(writer)
+                    } catch (e: Exception) {
+                        log(e.stackTraceToString())
+                    }
+                }
             }
         }
 
-        createGraph(packageName, funMap)
-
         return emptyList()
-    }
-
-
-    private fun createGraph(packageName: String, symbols:HashMap<KSFunctionDeclaration, ClassName?>) {
-        val className = Constants.KEY_CLASS_NAME
-        checkFile(packageName, "$className.kt")
-        try {
-            val builder = StringBuilder()
-            val classCreate = NavGraphCreatorProxy(builder)
-            val fileSpec = classCreate.generateJavaCode(
-                packageName,
-                className, symbols
-            )
-            fileSpec.writeTo(codeGenerator, true, symbols.keys.map { it.containingFile!! })
-        } catch (e: Exception) {
-            log(e.stackTraceToString())
-        }
     }
 
     private fun checkFile(packageName: String, fileName: String) {

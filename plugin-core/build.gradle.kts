@@ -52,4 +52,5 @@ dependencies {
     api(Libs.animation_compose)
     api(Libs.foundation_compose)
     api(Libs.navigation_animation_compose)
+    implementation(Libs.gson)
 }

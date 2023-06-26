@@ -1,6 +1,5 @@
 package com.ckenergy.compose.main
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -27,7 +26,6 @@ import com.ckenergy.compose.plugin.core.navigateRoute
 @Composable
 fun MainPage() {
     val controller = AppNavController.current
-    Log.d("MainPage", ""+ controller.currentDestination?.route)
     MyContent(
         modifier = Modifier.background(Color.White),
         title = "Main"
@@ -36,7 +34,10 @@ fun MainPage() {
             Text(text = "start", fontSize = 20.sp, modifier = Modifier
                 .padding(10.dp)
                 .clickable {
-                    controller.navigateRoute(ComposeRouterMapper.Second)
+                    controller.navigateRoute(ComposeRouterMapper.Second) {
+                        put("int", 1)
+                        put("string", "test")
+                    }
                 }
                 .padding(10.dp))
         }

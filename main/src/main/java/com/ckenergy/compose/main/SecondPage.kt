@@ -33,11 +33,11 @@ import java.io.File
  */
 @KRouter(ComposeRouterMapper.Second)
 @Composable
-fun SecondPage() {
-    Log.d("SecondPage", ""+ AppNavController.current.currentDestination?.route)
+fun SecondPage(int: Int, string: String?) {
+    Log.d("SecondPage", "int:$int,string:$string")
     MyContent(
         modifier = Modifier.background(Color.White),
-        title = "Second"
+        title = string ?: ""
     ) {
         val context = LocalContext.current
         val controller = AppNavController.current

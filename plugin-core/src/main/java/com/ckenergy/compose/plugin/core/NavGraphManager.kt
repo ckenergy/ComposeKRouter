@@ -107,8 +107,13 @@ object NavGraphManager {
 
 }
 
-fun NavController.navigateRoute(route: String){
-    NavGraphManager.navigate(this, route)
+fun NavController.navigateRoute(route: String, action: HashMap<String, Any>.() -> Unit = {}) {
+    val map = hashMapOf<String, Any>()
+    action(map)
+    val newRoute = if (map.isNotEmpty()) {
+        DestinationProvider.getDestination(route, map)
+    }else route
+    NavGraphManager.navigate(this, newRoute)
 }
 
 fun composeNav(action: NavGraphManager.() -> Unit) {
