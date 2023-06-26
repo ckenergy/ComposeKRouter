@@ -22,7 +22,12 @@ class ParameterCreatorProxy(private val logBuilder: StringBuilder) {
     ): TypeSpec {
         val funBuilder = FunSpec.constructorBuilder()
         parameters.forEach {
-            val list = it.type.modifiers.mapNotNull { it1 -> it1.toKModifier() }
+            val list = it.type.modifiers.mapNotNull { it1 -> it1.toKModifier() }.let { it1 ->
+                if (it.isVararg) {
+                    it1.toMutableList().apply { add(KModifier.VARARG) }
+                } else it1
+            }
+
             funBuilder.addParameter(it.name!!.asString(), it.type.toTypeName(), list)
         }
         val bindingClass = TypeSpec.classBuilder(name)

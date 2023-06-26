@@ -168,6 +168,6 @@ private fun addRoute(context: Context, controller: NavController) {
 
 #### 4、todo
 1、hook resource()方法
-2、用ksp生成composeModules简化框架
+2、用ksp生成composeModules简化框架 (不支持设置默认值)
 
 最近工作太忙，本来两个月前就写好了这块代码了，想完善好再分享出来的，但是一直没有时间，所以先把自己的发现分享出来，有兴趣的可以完善一下，如果对上面的两个ToDo有想法的欢迎和我交流（2ckenergy@gmail。com），避免大家重复造轮子：）

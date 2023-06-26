@@ -16,19 +16,3 @@ val navGraph = composeModules { controller ->
         }
     }
 }
-
-val navGraph1 = composeModules { controller ->
-    packageName = "com.ckenergy.compose.other"
-    composable(ComposeRouterMapper.Other+"\\{args}",
-        arguments = arrayListOf(
-            navArgument("args") {
-                type = NavType.StringType
-                nullable = true
-            })
-        ) {
-        val otherPageBean: OtherPageBean? = it.parseArguments()
-        OtherPage {
-            controller.navigateRoute(ComposeRouterMapper.Second)
-        }
-    }
-}

@@ -7,9 +7,7 @@ import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.ksp.writeTo
 import java.io.File
 
 private const val TAG = "ParameterProcessor"
@@ -71,6 +69,7 @@ class ParameterProcessor(
                         val typeSpec = classCreate.generateJavaCode(
                             className, it.parameters
                         )
+                        log(builder.toString())
                         val fileSpec = FileSpec.get(packageName, typeSpec)
                         fileSpec.writeTo(writer)
                     } catch (e: Exception) {

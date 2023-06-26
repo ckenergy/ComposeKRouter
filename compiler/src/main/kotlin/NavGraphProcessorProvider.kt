@@ -1,5 +1,4 @@
 import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
@@ -8,14 +7,13 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.ksp.writeTo
 import java.io.File
 
-class KRouterProcessorProvider : SymbolProcessorProvider {
+class NavGraphProcessorProvider : SymbolProcessorProvider {
 
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-        return KRouterProcessor(
+        return NavGraphProcessor(
             codeGenerator = environment.codeGenerator,
             logger = environment.logger,
             options = environment.options
@@ -25,7 +23,7 @@ class KRouterProcessorProvider : SymbolProcessorProvider {
 
 private const val TAG = "KRouterProcessor"
 
-class KRouterProcessor(
+class NavGraphProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
     private val options: Map<String, String>
@@ -77,6 +75,7 @@ class KRouterProcessor(
                 packageName,
                 className, symbols
             )
+            log(builder.toString())
             fileSpec.writeTo(codeGenerator, true, symbols.keys.map { it.containingFile!! })
         } catch (e: Exception) {
             log(e.stackTraceToString())

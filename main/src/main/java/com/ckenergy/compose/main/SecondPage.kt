@@ -33,8 +33,8 @@ import java.io.File
  */
 @KRouter(ComposeRouterMapper.Second)
 @Composable
-fun SecondPage(int: Int, string: String?) {
-    Log.d("SecondPage", "int:$int,string:$string")
+fun SecondPage(int: Int, string: String? = "default", testBean: TestBean, vararg long: Long) {
+    Log.d("SecondPage", "int:$int,string:$string,testBean:$testBean, long:$long")
     MyContent(
         modifier = Modifier.background(Color.White),
         title = string ?: ""

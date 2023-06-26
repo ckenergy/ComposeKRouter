@@ -26,6 +26,7 @@ import com.ckenergy.compose.plugin.core.navigateRoute
 @Composable
 fun MainPage() {
     val controller = AppNavController.current
+
     MyContent(
         modifier = Modifier.background(Color.White),
         title = "Main"
@@ -36,7 +37,9 @@ fun MainPage() {
                 .clickable {
                     controller.navigateRoute(ComposeRouterMapper.Second) {
                         put("int", 1)
-                        put("string", "test")
+//                        put("string", "test")
+                        put("long", longArrayOf(1L, 3L))
+                        put("testBean", TestBean(1.5f, false))
                     }
                 }
                 .padding(10.dp))

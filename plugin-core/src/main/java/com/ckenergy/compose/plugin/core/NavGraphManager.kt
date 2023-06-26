@@ -29,7 +29,7 @@ object NavGraphManager {
 
     private val graphContainer = hashSetOf<ModuleBuilder>()
 
-    val routeMap = hashMapOf<String, List<NavGraphDestination>>()
+    private val routeMap = hashMapOf<String, List<NavGraphDestination>>()
 
     var pluginLoader: IPluginLoader? = null
 

@@ -24,7 +24,10 @@ class NavGraphCreatorProxy(private val logBuilder: StringBuilder) {
     ): FileSpec {
         val codeBlockBuilder =
             CodeBlock.Builder()
-                .beginControlFlow("%M", moduleMemberName)//This will take care of the {} and indentations
+                .beginControlFlow(
+                    "%M",
+                    moduleMemberName
+                )//This will take care of the {} and indentations
                 .addStatement("packageName = \"$packageName\"")
         routerList.forEach {
             val funDec = it.key
@@ -41,23 +44,35 @@ class NavGraphCreatorProxy(private val logBuilder: StringBuilder) {
                 codeBlockBuilder.addStatement(
                     "composable(\"$routeName\") {" +
                             "%M()" +
-                            "}", composeFunName)
-            }else {
+                            "}", composeFunName
+                )
+            } else {
                 val className = it.value!!
-                val beanValueName = className.simpleName.replaceFirstChar { it1 -> it1.lowercase(Locale.getDefault()) }
-                val parameterStr = funDec.parameters.joinToString(separator = ",") { it1 -> "${beanValueName}."+it1.name!!.asString() }
+                val beanValueName =
+                    className.simpleName.replaceFirstChar { it1 -> it1.lowercase(Locale.getDefault()) }
+                val parameterStr = funDec.parameters.joinToString(separator = ",") { it1 ->
+                    val valueName = it1.name!!.asString()
+                    if (it1.hasDefault) {
+                        log("$composePackageName.$funName function parameter $valueName set default value may not work")
+                    }
+                    "$valueName = ${beanValueName}." + valueName
+                }
 
                 codeBlockBuilder.addStatement(
                     "composable(\"$routeName/{${Constants.KEY_ARG_NAME}}\", \n" +
                             "arguments = %M()\n" +
-                            ") { \n", getArguments)
+                            ") { \n", getArguments
+                )
                 codeBlockBuilder.addStatement(
-                            "val $beanValueName: %T? = it.%M() \n", className, parseArguments,)
+                    "   val $beanValueName: %T? = it.%M() \n", className, parseArguments,
+                )
                 codeBlockBuilder.addStatement(
-                            "if($beanValueName == null) return@composable \n")
+                    "   if($beanValueName == null) return@composable \n"
+                )
                 codeBlockBuilder.addStatement(
-                            "%M($parameterStr) \n" +
-                            "}", composeFunName)
+                    "   %M($parameterStr) \n" , composeFunName
+                )
+                codeBlockBuilder.addStatement("}")
             }
 
 
