@@ -6,7 +6,7 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
     repositories {
         google()
         mavenCentral()
@@ -14,11 +14,5 @@ dependencyResolutionManagement {
         maven { url 'https://maven.aliyun.com/repository/public' }
     }
 }
-rootProject.name = "ComposePlugIn"
-include ':app'
-include ':base-compose'
-include ':other'
-include ':kRouter-core'
-include ':main'
-include ':compiler'
-includeBuild('./plugin')
+
+include ':KRoutePlugin'

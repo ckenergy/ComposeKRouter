@@ -7,6 +7,7 @@ import com.google.devtools.ksp.processing.SymbolProcessorProvider
 import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
 import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.ksp.writeTo
 import java.io.File
 
@@ -71,11 +72,12 @@ class NavGraphProcessor(
         try {
             val builder = StringBuilder()
             val classCreate = NavGraphCreatorProxy(builder)
-            val fileSpec = classCreate.generateJavaCode(
+            val typeSpec = classCreate.generateJavaCode(
                 packageName,
                 className, symbols
             )
             log(builder.toString())
+            val fileSpec = FileSpec.get(packageName, typeSpec)
             fileSpec.writeTo(codeGenerator, true, symbols.keys.map { it.containingFile!! })
         } catch (e: Exception) {
             log(e.stackTraceToString())

@@ -1,5 +1,9 @@
 import com.google.devtools.ksp.symbol.KSFunctionDeclaration
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.MemberName
+import com.squareup.kotlinpoet.TypeSpec
 import java.util.Locale
 
 /**
@@ -8,7 +12,8 @@ import java.util.Locale
 class NavGraphCreatorProxy(private val logBuilder: StringBuilder) {
 
     private val moduleMemberName = MemberName("com.ckenergy.compose.plugin.core", "composeModules")
-    private val moduleClassName = ClassName("com.ckenergy.compose.plugin.core", "ModuleBuilder")
+    private val managerClassName = ClassName("com.ckenergy.compose.plugin.core", "NavGraphManager")
+    private val providerClassName = ClassName("com.ckenergy.compose.plugin.core", "INavGraphProvider")
     private val getArguments = MemberName("com.ckenergy.compose.plugin.core", "getArguments")
     private val parseArguments = MemberName("com.ckenergy.compose.plugin.core", "parseArguments")
 
@@ -21,13 +26,14 @@ class NavGraphCreatorProxy(private val logBuilder: StringBuilder) {
         packageName: String,
         name: String,
         routerList: HashMap<KSFunctionDeclaration, ClassName?>
-    ): FileSpec {
+    ): TypeSpec {
+        val graphName = "graph"
         val codeBlockBuilder =
             CodeBlock.Builder()
                 .beginControlFlow(
-                    "%M",
+                    "val $graphName = %M",
                     moduleMemberName
-                )//This will take care of the {} and indentations
+                )
                 .addStatement("packageName = \"$packageName\"")
         routerList.forEach {
             val funDec = it.key
@@ -41,11 +47,11 @@ class NavGraphCreatorProxy(private val logBuilder: StringBuilder) {
             val composeFunName = MemberName(composePackageName, funName)
 
             if (it.value == null) {
-                codeBlockBuilder.addStatement(
-                    "composable(\"$routeName\") {" +
-                            "%M()" +
-                            "}", composeFunName
+                codeBlockBuilder.beginControlFlow(
+                    "composable(\"$routeName\")"
                 )
+                codeBlockBuilder.addStatement("%M()", composeFunName)
+                codeBlockBuilder.endControlFlow()
             } else {
                 val className = it.value!!
                 val beanValueName =
@@ -58,34 +64,38 @@ class NavGraphCreatorProxy(private val logBuilder: StringBuilder) {
                     "$valueName = ${beanValueName}." + valueName
                 }
 
-                codeBlockBuilder.addStatement(
+                codeBlockBuilder.beginControlFlow(
                     "composable(\"$routeName/{${Constants.KEY_ARG_NAME}}\", \n" +
-                            "arguments = %M()\n" +
-                            ") { \n", getArguments
+                            "   arguments = %M()\n" +
+                            ")", getArguments
                 )
                 codeBlockBuilder.addStatement(
-                    "   val $beanValueName: %T? = it.%M() \n", className, parseArguments,
+                    "   val $beanValueName: %T? = it.%M()", className, parseArguments,
                 )
                 codeBlockBuilder.addStatement(
-                    "   if($beanValueName == null) return@composable \n"
+                    "   if($beanValueName == null) return@composable"
                 )
                 codeBlockBuilder.addStatement(
-                    "   %M($parameterStr) \n" , composeFunName
+                    "   %M($parameterStr)", composeFunName
                 )
-                codeBlockBuilder.addStatement("}")
+                codeBlockBuilder.endControlFlow()
             }
-
-
         }
         codeBlockBuilder.endControlFlow()
 
-        val module = PropertySpec.builder(name, moduleClassName)
-            .initializer(codeBlockBuilder.build())
-            .build()
+        val managerName = "manager"
 
-        return FileSpec.builder(packageName, name)
-            .addProperty(module)
-            .build()
+        val typeSpec = TypeSpec.objectBuilder(ClassName(packageName, name))
+            .addFunction(
+                FunSpec.builder("register")
+                    .addParameter(managerName, managerClassName)
+                    .addAnnotation(JvmStatic::class.java)
+                    .addCode(codeBlockBuilder.addStatement("$managerName.addModules($graphName)").build())
+                    .build()
+            )
+            .addSuperinterface(providerClassName)
+
+        return typeSpec.build()
     }
 
     private fun log(msg: String) {

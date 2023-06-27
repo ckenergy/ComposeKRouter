@@ -1,6 +1,7 @@
 package com.ckenergy.compose.other
 
 import android.app.Application
+import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import com.ckenergy.compose.plugin.core.IPluginLoader
@@ -16,6 +17,7 @@ class MyApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         initCompose()
+        Log.d("ss", "ss")
     }
 
     private fun initCompose() {
@@ -26,7 +28,7 @@ class MyApplication: Application() {
                 }
             }
             notFindPage = { route: String -> NotFindPage(route) }
-            addModules(navGraph)
+//            addModules(navGraph)
         }
     }
 
