@@ -16,9 +16,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.ckenergy.compose.AppNavController
 import com.ckenergy.compose.MyContent
 import com.ckenergy.compose.common.ComposeRouterMapper
-import com.ckenergy.compose.plugin.core.AppNavController
 import com.ckenergy.compose.plugin.core.KRouter
 import com.ckenergy.compose.plugin.core.ModuleBuilder
 import com.ckenergy.compose.plugin.core.NavGraphManager

@@ -1,23 +1,15 @@
 package com.ckenergy.compose.plugin.core
 
-import android.annotation.SuppressLint
 import android.app.Application
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.compositionLocalOf
 import androidx.core.net.toUri
 import androidx.navigation.*
 import com.google.accompanist.navigation.animation.AnimatedComposeNavigator
 import com.google.accompanist.navigation.animation.composable
 import java.net.URLEncoder
 
-
-//公用一个NavHostController 全局获取当前可跳转
-@SuppressLint("CompositionLocalNaming")
-val AppNavController = compositionLocalOf<NavHostController> { error("NavHostController error") }
 
 /**
  * @author ckenergy
@@ -122,24 +114,6 @@ fun composeNav(action: NavGraphManager.() -> Unit) {
 
 fun composeModules(action : ModuleBuilder) = action
 
-/**
- * compose页面跳转平移动画
- */
-@ExperimentalAnimationApi
-fun NavGraphBuilder.composableHorizontal(
-    route: String,
-    arguments: List<NamedNavArgument> = emptyList(),
-    deepLinks: List<NavDeepLink> = emptyList(),
-    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
-) {
-    composable(
-        route = route,
-        arguments = arguments,
-        deepLinks = deepLinks,
-        content = content,
-    )
-}
-
 @ExperimentalAnimationApi
 fun NavGraphBuilder.composablePlugin(
     graph: NavGraph,
@@ -164,29 +138,4 @@ fun NavGraphBuilder.composablePlugin(
                 }
             }
         )
-}
-
-/**
- * compose页面跳转竖直动画
- */
-@ExperimentalAnimationApi
-fun NavGraphBuilder.composableVertical(
-    route: String,
-    arguments: List<NamedNavArgument> = emptyList(),
-    deepLinks: List<NavDeepLink> = emptyList(),
-    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
-) {
-    this@composableVertical.composable(
-        route = route,
-        arguments = arguments,
-        deepLinks = deepLinks,
-        enterTransition = {
-            // Let's make for a really long fade in
-            slideIntoContainer(
-                AnimatedContentScope.SlideDirection.Up,
-                animationSpec = tween(500)
-            )
-        },
-        content = content,
-    )
 }

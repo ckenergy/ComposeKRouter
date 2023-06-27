@@ -1,16 +1,21 @@
 package com.ckenergy.compose
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.*
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.*
 import com.ckenergy.compose.common.ComposeRouterMapper
-import com.ckenergy.compose.plugin.core.AppNavController
 import com.ckenergy.compose.plugin.core.NavGraphManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
+
+//公用一个NavHostController 全局获取当前可跳转
+@SuppressLint("CompositionLocalNaming")
+val AppNavController = compositionLocalOf<NavHostController> { error("NavHostController error") }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

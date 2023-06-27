@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ckenergy.compose.AppNavController
 import com.ckenergy.compose.MyContent
 import com.ckenergy.compose.common.ComposeRouterMapper
-import com.ckenergy.compose.plugin.core.AppNavController
 import com.ckenergy.compose.plugin.core.KRouter
 import com.ckenergy.compose.plugin.core.navigateRoute
 

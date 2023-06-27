@@ -3,7 +3,6 @@ package com.ckenergy.compose
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import com.ckenergy.compose.plugin.core.AppNavController
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 /**

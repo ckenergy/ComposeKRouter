@@ -3,7 +3,7 @@ package com.ckenergy.compose.plugin.core
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
-const val NOT_FIND_ROUTE = "Not_find_route="
+const val NOT_FIND_ROUTE = "Not_Find_Route="
 /**
  * @author ckenergy
  * @date 2023/2/15

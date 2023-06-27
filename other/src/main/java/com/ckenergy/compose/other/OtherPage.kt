@@ -13,9 +13,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ckenergy.compose.AppNavController
 import com.ckenergy.compose.MyContent
-import com.ckenergy.compose.plugin.core.AppNavController
-import com.ckenergy.compose.plugin.core.NavGraphManager
 import com.ckenergy.compose.plugin.core.PluginManager
 
 /**
