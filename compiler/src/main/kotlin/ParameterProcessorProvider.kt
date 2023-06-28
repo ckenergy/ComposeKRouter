@@ -102,7 +102,7 @@ class ParameterProcessor(
                     "ksp {\n" +
                     "    arg(\"${Constants.KEY_KROUTER_NAME}\", project.getName()) {\n" +
                     "}\n")
-            throw RuntimeException("ARouter::Compiler >>> No module name, for more information, look at gradle log.")
+            throw RuntimeException("KRouter::Compiler >>> No module name, for more information, look at gradle log.")
         }
     }
 

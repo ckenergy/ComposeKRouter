@@ -10,6 +10,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.*
 import com.ckenergy.compose.common.ComposeRouterMapper
+import com.ckenergy.compose.plugin.core.IPluginLoader
 import com.ckenergy.compose.plugin.core.NavGraphManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 
@@ -58,7 +59,14 @@ fun NavGraph(
 
         },
     ) {
-        NavGraphManager.composable(this, navController)
+        NavGraphManager.initKRouter(this, navController) {
+            pluginLoader = object : IPluginLoader {
+                override fun load(route: String, controller: NavController, builder: NavGraphBuilder) {
+//                    composablePlugIn(controller, libNavGraph)
+                }
+            }
+            notFindPage = { route: String -> NotFindPage(route) }
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 import com.google.devtools.ksp.symbol.KSValueParameter
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.PropertySpec
@@ -33,6 +34,7 @@ class ParameterCreatorProxy(private val logBuilder: StringBuilder) {
         val bindingClass = TypeSpec.classBuilder(name)
             .addModifiers(KModifier.PUBLIC)
             .primaryConstructor(funBuilder.build())
+            .addAnnotation(ClassName.bestGuess("androidx.annotation.Keep"))
         parameters.forEach {
             bindingClass.addProperty(
                 PropertySpec.builder(

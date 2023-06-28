@@ -1,5 +1,6 @@
 package com.ckenergy.compose.kroute
 
+import com.ckenergy.compose.kroute.utils.ScanSetting
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.Opcodes
@@ -36,7 +37,8 @@ class RegisterKRouteClassVisitor(api: Int, classVisitor: ClassVisitor?, private 
     ): MethodVisitor {
         val mv = super.visitMethod(access, name, descriptor, signature, exceptions)
 
-        if (name == "<init>") {
+        if (className == ScanSetting.GENERATE_TO_CLASS_NAME && name == ScanSetting.GENERATE_TO_METHOD_NAME) {
+            println("RegisterKRouteClassVisitor:$list")
             return RegisterKRouteMethodVisitor(api, mv, access, name, descriptor, list)
         }
         return mv

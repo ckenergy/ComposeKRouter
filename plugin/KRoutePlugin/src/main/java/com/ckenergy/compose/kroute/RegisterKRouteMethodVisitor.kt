@@ -1,5 +1,6 @@
 package com.ckenergy.compose.kroute
 
+import com.ckenergy.compose.kroute.utils.ScanSetting
 import org.objectweb.asm.MethodVisitor
 import org.objectweb.asm.commons.AdviceAdapter
 
@@ -15,13 +16,12 @@ class RegisterKRouteMethodVisitor(
     private val list: Set<String>
 ) : AdviceAdapter(api, methodVisitor, access, name, descriptor) {
 
-    override fun onMethodEnter() {
-        super.onMethodEnter()
+    override fun onMethodExit(opcode: Int) {
+        super.onMethodExit(opcode)
         list.forEach {
             mv.visitVarInsn(ALOAD, 0)
-            mv.visitMethodInsn(INVOKESTATIC, it.replace(".", "/"), "register", "(Lcom/ckenergy/compose/plugin/core/NavGraphManager;)V", false)
+            mv.visitMethodInsn(INVOKESTATIC, it.replace(".", "/"), ScanSetting.REGISTER_METHOD_NAME, "(L${ScanSetting.GENERATE_TO_CLASS_NAME};)V", false)
         }
-
     }
 
 }

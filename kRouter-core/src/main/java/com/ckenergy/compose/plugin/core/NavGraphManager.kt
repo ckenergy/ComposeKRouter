@@ -31,6 +31,11 @@ object NavGraphManager {
 
     init {
         addModules(baseNavGraph)
+        registerMap()
+    }
+
+    private fun registerMap() {
+
     }
 
     /**
@@ -44,8 +49,9 @@ object NavGraphManager {
      * 加载配置好的路由模块
      */
     @OptIn(ExperimentalAnimationApi::class)
-    fun composable(builder: NavGraphBuilder, controller: NavController) {
+    fun initKRouter(builder: NavGraphBuilder, controller: NavController, action: NavGraphManager.() -> Unit) {
         this.builder = builder
+        action(NavGraphManager)
         graphContainer.forEach {
             buildNavGraph(controller, it) { it1 ->
                 NavGraphManager.builder.composable(it1.route, it1.arguments, content = it1.content)
@@ -106,10 +112,6 @@ fun NavController.navigateRoute(route: String, action: HashMap<String, Any>.() -
         DestinationProvider.getDestination(route, map)
     }else route
     NavGraphManager.navigate(this, newRoute)
-}
-
-fun composeNav(action: NavGraphManager.() -> Unit) {
-    action(NavGraphManager)
 }
 
 fun composeModules(action : ModuleBuilder) = action

@@ -1,8 +1,8 @@
 package com.ckenergy.compose.kroute
 
-import com.android.build.api.instrumentation.FramesComputationMode
-import com.android.build.api.instrumentation.InstrumentationScope
+import com.android.build.api.artifact.ScopedArtifact
 import com.android.build.api.variant.AndroidComponentsExtension
+import com.android.build.api.variant.ScopedArtifacts
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -19,14 +19,20 @@ class KRoutePlugin : Plugin<Project> {
         graphList.clear()
 
         extension.onVariants(extension.selector().all()) { variant ->
-            variant.instrumentation.apply {
-                transformClassesWith(CollectClassVisitorFactory::class.java, InstrumentationScope.ALL) {
-                }
-                transformClassesWith(KRouteASMFactory::class.java, InstrumentationScope.ALL) {
-                    it.registerMap.set(graphList)
-                }
-                setAsmFramesComputationMode(FramesComputationMode.COMPUTE_FRAMES_FOR_INSTRUMENTED_METHODS)
-            }
+            val taskProviderTransformAllClassesTask =
+                project.tasks.register(
+                    "${variant.name}TransformAllClassesTask",
+                    TransformAllClassesTask::class.java
+                )
+            // https://github.com/android/gradle-recipes
+            variant.artifacts.forScope(ScopedArtifacts.Scope.ALL)
+                .use(taskProviderTransformAllClassesTask)
+                .toTransform(
+                    ScopedArtifact.CLASSES,
+                    TransformAllClassesTask::allJars,
+                    TransformAllClassesTask::allDirectories,
+                    TransformAllClassesTask::output
+                )
         }
 
     }

@@ -1,11 +1,6 @@
 package com.ckenergy.compose.plugin
 
 import android.app.Application
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
-import com.ckenergy.compose.main.NavGraph
-import com.ckenergy.compose.plugin.core.IPluginLoader
-import com.ckenergy.compose.plugin.core.composeNav
 
 /**
  * @author ckenergy
@@ -16,20 +11,6 @@ class MyApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initCompose()
-    }
-
-    private fun initCompose() {
-        composeNav {
-            pluginLoader = object : IPluginLoader {
-                override fun load(route: String, controller: NavController, builder: NavGraphBuilder) {
-//                    composablePlugIn(controller, libNavGraph)
-                }
-            }
-            notFindPage = { route: String -> NotFindPage(route) }
-            NavGraph.register(this)
-//            addModules(libNavGraph)
-        }
     }
 
 }

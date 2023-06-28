@@ -1,4 +1,4 @@
-package com.ckenergy.compose.plugin
+package com.ckenergy.compose
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import com.ckenergy.compose.plugin.core.IPluginLoader
-import com.ckenergy.compose.plugin.core.composeNav
+import com.ckenergy.compose.plugin.core.initKRouter
 
 /**
  * @author ckenergy
@@ -21,7 +21,7 @@ class MyApplication: Application() {
     }
 
     private fun initCompose() {
-        composeNav {
+        initKRouter {
             pluginLoader = object : IPluginLoader {
                 override fun load(route: String, controller: NavController, builder: NavGraphBuilder) {
 //                    composablePlugIn(controller, libNavGraph)
