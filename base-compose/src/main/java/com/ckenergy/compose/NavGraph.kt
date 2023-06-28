@@ -13,6 +13,7 @@ import com.ckenergy.compose.common.ComposeRouterMapper
 import com.ckenergy.compose.plugin.core.IPluginLoader
 import com.ckenergy.compose.plugin.core.NavGraphManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
+import com.google.accompanist.navigation.animation.composable
 
 //公用一个NavHostController 全局获取当前可跳转
 @SuppressLint("CompositionLocalNaming")

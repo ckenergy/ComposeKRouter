@@ -3,6 +3,10 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+apply {
+    from("../upload_maven.gradle")
+}
+
 android {
     namespace = "com.ckenergy.compose.plugin.core"
     compileSdk = Versions.compileSdk

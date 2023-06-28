@@ -14,7 +14,7 @@ dependencyResolutionManagement {
         maven { url 'https://maven.aliyun.com/repository/public' }
     }
 }
-rootProject.name = "ComposePlugIn"
+rootProject.name = "ComposeKRouter"
 include ':app'
 include ':base-compose'
 include ':other'
