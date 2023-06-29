@@ -1,10 +1,8 @@
-## ComposeKRouter is a component router
+## ComposeKRouter组件化路由框架
 
-[中文文档](Readme-CN.MD)
+### 使用方式 (last_version = "1.0.0")
 
-### how to use (last_version = "1.0.0")
-
-#### 1、add dependencies
+#### 1、添加依赖
 root build.gradle
 ``` groovy
 dependencies {
@@ -15,7 +13,7 @@ app build.gradle
 ``` groovy
 implementation("io.github.ckenergy:kRouter-core:$KRouter_version")
 ```
-add in module build.gradle where use @KRouter
+使用到@KRouter注解的module build.gradle
 ```groovy
 ksp {
     arg("KROUTER_PACKAGE", "you module namespace")
@@ -24,25 +22,24 @@ ksp("io.github.ckenergy:kRouter-compiler:$KRouter_version")
 ```
 
 
-#### 2、add @KRouter in @Composable function（no need add compose in NavHost）
+#### 2、给一个页面加上@KRouter注册路由（就无需再NavHost给每个页面注册路由了）
 ``` kotlin
 @KRouter(ComposeRouterMapper.Second)
 @Composable
 fun SecondPage(int: Int, string: String? = "default", testBean: TestBean, vararg long: Long)
+注意：函数上的参数只能放简单的数据（基本类型和bean之类的，因为这块用的是Gson来序列化的）
 
-Note: The parameters on the function can only put simple data (primitives , string and beans, because this piece is serialized by Gson)
-
-The code above is equal to the original way of registering routes
+上面的代码等于原始注册路由的方式
 
 NavHost() {
     composable(ComposeRouterMapper.Second) {
-        //... get parameters
+        //... 获取参数
         SecondPage(....)
     }
 }
 
 ```
-#### 3、add in NavHost
+#### 3、在NavHost初始化
 ``` kotlin
 NavHost() {
     NavGraphManager.initKRouter(this, navController) {
@@ -50,7 +47,7 @@ NavHost() {
     }
 }
 ```
-#### 4、put data when navigate
+#### 4、跳转的时候带上参数就可以啦
 ``` kotlin
 controller.navigateRoute(ComposeRouterMapper.Second) {
     put("int", 1)//key的名字要和SecondPage函数参数名要保持一致一一对应

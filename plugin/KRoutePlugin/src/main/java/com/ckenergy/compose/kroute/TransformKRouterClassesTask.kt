@@ -48,7 +48,7 @@ abstract class TransformKRouterClassesTask : DefaultTask() {
         )
         var originInject: ByteArray? = null
         allJars.get().forEach { file ->
-            log("handling " + file.asFile.getAbsolutePath())
+//            log("handling " + file.asFile.getAbsolutePath())
             val jarFile = JarFile(file.asFile)
             jarFile.entries().iterator().forEach { entry ->
 //                log("Adding from jar ${entry.name}")
@@ -79,7 +79,7 @@ abstract class TransformKRouterClassesTask : DefaultTask() {
             jarFile.close()
         }
         allDirectories.get().forEach { directory ->
-            log("handling " + directory.asFile.getAbsolutePath())
+//            log("handling " + directory.asFile.getAbsolutePath())
             directory.asFile.walk().forEach { file ->
                 if (file.isFile) {
 //                    log("Found $file.name")
