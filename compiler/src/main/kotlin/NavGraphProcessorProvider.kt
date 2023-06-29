@@ -22,7 +22,7 @@ class NavGraphProcessorProvider : SymbolProcessorProvider {
     }
 }
 
-private const val TAG = "KRouterProcessor"
+private const val TAG = "NavGraphProcessorProvider"
 
 class NavGraphProcessor(
     private val codeGenerator: CodeGenerator,

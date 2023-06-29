@@ -13,5 +13,5 @@ import androidx.navigation.NavBackStackEntry
 data class NavGraphDestination(
     val route: String,
     val arguments: List<NamedNavArgument> = emptyList(),
-    val content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit,
+    val content: @Composable (NavBackStackEntry) -> Unit,
 )

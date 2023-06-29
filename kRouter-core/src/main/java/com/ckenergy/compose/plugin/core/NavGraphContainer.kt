@@ -16,7 +16,7 @@ class NavGraphContainer {
     fun composable(
         route: String,
         arguments: List<NamedNavArgument> = emptyList(),
-        content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit,
+        content: @Composable (NavBackStackEntry) -> Unit,
     ) {
         list.add(NavGraphDestination(route, arguments, content))
     }

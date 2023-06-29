@@ -1,15 +1,18 @@
 package com.ckenergy.compose.plugin.core
 
 import android.app.Application
+import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.core.net.toUri
 import androidx.navigation.*
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.compose.composable
 import com.google.accompanist.navigation.animation.AnimatedComposeNavigator
-import com.google.accompanist.navigation.animation.composable
 import java.net.URLEncoder
-
 
 /**
  * @author ckenergy
@@ -26,6 +29,8 @@ object NavGraphManager {
     var pluginLoader: IPluginLoader? = null
 
     var notFindPage: (@Composable (String) -> Unit)? = null
+
+    var isAnimation = true
 
     private lateinit var builder: NavGraphBuilder
 
@@ -49,12 +54,24 @@ object NavGraphManager {
      * 加载配置好的路由模块
      */
     @OptIn(ExperimentalAnimationApi::class)
-    fun initKRouter(builder: NavGraphBuilder, controller: NavController, action: NavGraphManager.() -> Unit) {
+    fun initKRouter(
+        builder: NavGraphBuilder,
+        controller: NavController,
+        action: NavGraphManager.() -> Unit
+    ) {
         this.builder = builder
         action(NavGraphManager)
         graphContainer.forEach {
             buildNavGraph(controller, it) { it1 ->
-                NavGraphManager.builder.composable(it1.route, it1.arguments, content = it1.content)
+                NavGraphManager.builder.run {
+                    if (isAnimation) {
+                        animationCompose(it1)
+                    } else {
+                        composable(it1.route, it1.arguments, content = { it2 ->
+                            it1.content(it2)
+                        })
+                    }
+                }
             }
         }
     }
@@ -65,11 +82,17 @@ object NavGraphManager {
     @OptIn(ExperimentalAnimationApi::class)
     fun composablePlugIn(controller: NavController, compose: ModuleBuilder) {
         buildNavGraph(controller, compose) {
-            builder.composablePlugin(controller.graph, it.route, it.arguments, content = it.content)
+            builder.composablePlugin(controller.graph, it.route, it.arguments, content = { it1 ->
+                it.content(it1)
+            })
         }
     }
 
-    private fun buildNavGraph(controller: NavController, compose: ModuleBuilder, action: (NavGraphDestination) -> Unit) {
+    private fun buildNavGraph(
+        controller: NavController,
+        compose: ModuleBuilder,
+        action: (NavGraphDestination) -> Unit
+    ) {
         val container = NavGraphContainer()
         compose(container, controller)
         routeMap[container.packageName] = container.list
@@ -90,15 +113,16 @@ object NavGraphManager {
     }
 
     fun navigate(controller: NavController, route: String) {
-        val request = NavDeepLinkRequest.Builder.fromUri(NavDestination.createRoute(route).toUri()).build()
+        val request =
+            NavDeepLinkRequest.Builder.fromUri(NavDestination.createRoute(route).toUri()).build()
         val match = controller.graph.matchDeepLink(request)
         if (match == null) {//动态加载
             pluginLoader?.load(route, controller, builder)
         }
         val match1 = controller.graph.matchDeepLink(request)
         if (match1 == null) {
-            controller.navigate(NOT_FIND_ROUTE+URLEncoder.encode(route, "utf-8"))
-        }else {
+            controller.navigate(NOT_FIND_ROUTE + URLEncoder.encode(route, "utf-8"))
+        } else {
             controller.navigate(route)
         }
     }
@@ -110,34 +134,44 @@ fun NavController.navigateRoute(route: String, action: HashMap<String, Any>.() -
     action(map)
     val newRoute = if (map.isNotEmpty()) {
         DestinationProvider.getDestination(route, map)
-    }else route
+    } else route
     NavGraphManager.navigate(this, newRoute)
 }
 
-fun composeModules(action : ModuleBuilder) = action
+fun composeModules(action: ModuleBuilder) = action
 
 @ExperimentalAnimationApi
-fun NavGraphBuilder.composablePlugin(
+internal fun NavGraphBuilder.composablePlugin(
     graph: NavGraph,
     route: String,
     arguments: List<NamedNavArgument> = emptyList(),
     deepLinks: List<NavDeepLink> = emptyList(),
-    content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
+    content: @Composable (NavBackStackEntry) -> Unit
 ) {
-    val match = graph.matchDeepLink(NavDeepLinkRequest.Builder.fromUri(NavDestination.createRoute(route).toUri()).build())
-    if (match == null)
-        graph.addDestination(
+    val match = graph.matchDeepLink(
+        NavDeepLinkRequest.Builder.fromUri(
+            NavDestination.createRoute(route).toUri()
+        ).build()
+    )
+    if (match == null) {
+        val destination = if (NavGraphManager.isAnimation)
             AnimatedComposeNavigator.Destination(
                 provider[AnimatedComposeNavigator::class],
-                content
-            ).apply {
-                this.route = route
-                arguments.forEach { (argumentName, argument) ->
-                    addArgument(argumentName, argument)
-                }
-                deepLinks.forEach { deepLink ->
-                    addDeepLink(deepLink)
-                }
+
+                ) {
+                content(it)
             }
-        )
+        else
+            ComposeNavigator.Destination(provider[ComposeNavigator::class], content)
+
+        destination.apply {
+            this.route = route
+            arguments.forEach { (argumentName, argument) ->
+                addArgument(argumentName, argument)
+            }
+            deepLinks.forEach { deepLink ->
+                addDeepLink(deepLink)
+            }
+        }
+    }
 }

@@ -8,30 +8,23 @@ import org.gradle.api.Project
 
 class KRoutePlugin : Plugin<Project> {
 
-    companion object {
-        val graphList = hashSetOf<String>()
-
-    }
-
     override fun apply(project: Project) {
         val extension = project.extensions.getByType(AndroidComponentsExtension::class.java)
 
-        graphList.clear()
-
         extension.onVariants(extension.selector().all()) { variant ->
-            val taskProviderTransformAllClassesTask =
+            val taskProviderTransformKRouterClassesTask =
                 project.tasks.register(
-                    "${variant.name}TransformAllClassesTask",
-                    TransformAllClassesTask::class.java
+                    "${variant.name}TransformKRouterClassesTask",
+                    TransformKRouterClassesTask::class.java
                 )
             // https://github.com/android/gradle-recipes
             variant.artifacts.forScope(ScopedArtifacts.Scope.ALL)
-                .use(taskProviderTransformAllClassesTask)
+                .use(taskProviderTransformKRouterClassesTask)
                 .toTransform(
                     ScopedArtifact.CLASSES,
-                    TransformAllClassesTask::allJars,
-                    TransformAllClassesTask::allDirectories,
-                    TransformAllClassesTask::output
+                    TransformKRouterClassesTask::allJars,
+                    TransformKRouterClassesTask::allDirectories,
+                    TransformKRouterClassesTask::output
                 )
         }
 

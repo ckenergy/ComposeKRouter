@@ -53,7 +53,7 @@ dependencies {
     val composeBom = platform(Libs.bom_compose)
     implementation(composeBom)
 
-//    implementation("androidx.navigation:navigation-compose:2.6.0")
+    implementation("androidx.navigation:navigation-compose:2.6.0")
 
 //    implementation(Libs.animation_compose)
 //    implementation(Libs.foundation_compose)

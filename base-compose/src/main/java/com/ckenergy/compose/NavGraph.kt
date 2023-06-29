@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.*
+import androidx.navigation.compose.NavHost
+//import androidx.navigation.compose.composable
 import com.ckenergy.compose.common.ComposeRouterMapper
 import com.ckenergy.compose.plugin.core.IPluginLoader
 import com.ckenergy.compose.plugin.core.NavGraphManager
@@ -50,14 +52,12 @@ fun NavGraph(
                 AnimatedContentScope.SlideDirection.Right,
                 animationSpec = springSpec
             )
-
         },
         exitTransition = {
             slideOutOfContainer(
                 AnimatedContentScope.SlideDirection.Left,
                 animationSpec = springSpec
             )
-
         },
     ) {
         NavGraphManager.initKRouter(this, navController) {
@@ -67,6 +67,7 @@ fun NavGraph(
                 }
             }
             notFindPage = { route: String -> NotFindPage(route) }
+            isAnimation = true
         }
     }
 }

@@ -15,11 +15,12 @@ import java.io.BufferedOutputStream
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.io.InputStream
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
 
-abstract class TransformAllClassesTask : DefaultTask() {
+abstract class TransformKRouterClassesTask : DefaultTask() {
 
     @get:InputFiles
     abstract val allDirectories: ListProperty<Directory>
@@ -61,11 +62,7 @@ abstract class TransformAllClassesTask : DefaultTask() {
                                 }
                             }
                             // Copy
-                            jarOutput.putNextEntry(JarEntry(entry.name))
-                            jarFile.getInputStream(entry).use {
-                                it.copyTo(jarOutput)
-                            }
-                            jarOutput.closeEntry()
+                            jarOutput.saveEntry(entry.name, jarFile.getInputStream(entry))
                         } else {
                             // Skip
 //                            log("Find inject byte code, Skip ${entry.name}")
@@ -93,11 +90,7 @@ abstract class TransformAllClassesTask : DefaultTask() {
                             ScanUtils.scanClass(input, targetList, false)
                         }
                     }
-                    jarOutput.putNextEntry(JarEntry(relativePath.replace(File.separatorChar, '/')))
-                    file.inputStream().use { inputStream ->
-                        inputStream.copyTo(jarOutput)
-                    }
-                    jarOutput.closeEntry()
+                    jarOutput.saveEntry(relativePath.replace(File.separatorChar, '/'), file.inputStream())
                 }
             }
         }
@@ -109,10 +102,7 @@ abstract class TransformAllClassesTask : DefaultTask() {
         val resultByteArray = InjectUtils.referHackWhenInit(
             ByteArrayInputStream(originInject), targetList
         )
-        jarOutput.putNextEntry(JarEntry(ScanSetting.GENERATE_TO_CLASS_FILE_NAME))
-        ByteArrayInputStream(resultByteArray).use { inputStream ->
-            inputStream.copyTo(jarOutput)
-        }
+        jarOutput.saveEntry(ScanSetting.GENERATE_TO_CLASS_FILE_NAME, ByteArrayInputStream(resultByteArray))
         log("Inject byte code successful")
 
         jarOutput.close()
@@ -120,6 +110,15 @@ abstract class TransformAllClassesTask : DefaultTask() {
         println("transfom time:${System.currentTimeMillis() - startTime}")
 
     }
+
+    private fun JarOutputStream.saveEntry(entryName: String, inputStream: InputStream) {
+        this.putNextEntry(JarEntry(entryName))
+        inputStream.use {
+            it.copyTo(this)
+        }
+        this.closeEntry()
+    }
+
 
     private fun log(msg: String) {
         println("TransformAllClassesTask==== $msg")

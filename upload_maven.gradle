@@ -2,7 +2,7 @@ apply plugin: 'maven-publish'
 
 def MAVEN_LOCAL_PATH = 'https://s01.oss.sonatype.org/content/repositories/releases/'
 
-def ARTIFACT_ID = "compose-"+project.archivesBaseName
+def ARTIFACT_ID = project.archivesBaseName
 def GROUP_ID = 'io.github.ckenergy'
 //def ACCOUNT = username
 //def PASSWORD = password
