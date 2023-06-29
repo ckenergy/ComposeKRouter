@@ -3,7 +3,26 @@
 ### 使用方式
 
 #### 1、添加依赖
-#### 1、给一个页面加上@KRouter注册路由（就无需再NavHost给每个页面注册路由了）
+root build.gradle
+``` groovy
+dependencies {
+    classpath  "io.github.ckenergy:KRoutePlugin:$KRouter_version"
+}
+```
+app build.gradle
+``` groovy
+implementation("io.github.ckenergy:kRouter-core:$KRouter_version")
+```
+使用到@KRouter注解的module build.gradle
+```groovy
+ksp {
+    arg("KROUTER_PACKAGE", "you module namespace")
+}
+ksp("io.github.ckenergy:kRouter-compiler:$KRouter_version")
+```
+
+
+#### 2、给一个页面加上@KRouter注册路由（就无需再NavHost给每个页面注册路由了）
 ``` kotlin
 @KRouter(ComposeRouterMapper.Second)
 @Composable
@@ -19,7 +38,7 @@ NavHost() {
 }
 
 ```
-#### 2、在NavHost初始化
+#### 3、在NavHost初始化
 ``` kotlin
 NavHost() {
     NavGraphManager.initKRouter(this, navController) {
@@ -27,7 +46,7 @@ NavHost() {
     }
 }
 ```
-#### 3、跳转的时候带上参数就可以啦
+#### 4、跳转的时候带上参数就可以啦
 ``` kotlin
 controller.navigateRoute(ComposeRouterMapper.Second) {
     put("int", 1)//key的名字要和SecondPage函数参数名要保持一致一一对应

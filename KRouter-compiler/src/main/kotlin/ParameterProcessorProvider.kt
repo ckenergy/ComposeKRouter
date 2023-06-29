@@ -47,8 +47,6 @@ class ParameterProcessor(
             return emptyList()
         }
 
-        val packageName = options.findPackageName(logger)
-
         symbols.forEach {
             if (it.parameters.isNotEmpty()) {
                 val pair = it.getClassFullName()
@@ -70,7 +68,7 @@ class ParameterProcessor(
                             className, it.parameters
                         )
                         log(builder.toString())
-                        val fileSpec = FileSpec.get(packageName, typeSpec)
+                        val fileSpec = FileSpec.get(composePackageName, typeSpec)
                         fileSpec.writeTo(writer)
                     } catch (e: Exception) {
                         log(e.stackTraceToString())

@@ -69,6 +69,6 @@ dependencies {
 
     api(Libs.navigation_animation_compose)
     api(Libs.flowlayout_compose)
-    api(project(":kRouter-core"))
+    api(project(":KRouter-core"))
 
 }

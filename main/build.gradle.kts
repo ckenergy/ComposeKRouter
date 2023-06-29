@@ -57,5 +57,5 @@ dependencies {
     implementation(Libs.material)
 
     implementation (project(":base-compose"))
-    ksp(project(":compiler"))
+    "ksp"(project(":KRouter-compiler"))
 }
