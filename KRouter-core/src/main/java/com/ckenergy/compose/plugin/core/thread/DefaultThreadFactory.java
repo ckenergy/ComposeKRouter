@@ -23,12 +23,11 @@ public class DefaultThreadFactory implements ThreadFactory {
         SecurityManager s = System.getSecurityManager();
         group = (s != null) ? s.getThreadGroup() :
                 Thread.currentThread().getThreadGroup();
-        namePrefix = "ARouter task pool No." + poolNumber.getAndIncrement() + ", thread No.";
+        namePrefix = "Router task pool No." + poolNumber.getAndIncrement() + ", thread No.";
     }
 
     public Thread newThread(@NonNull Runnable runnable) {
         String threadName = namePrefix + threadNumber.getAndIncrement();
-//        ARouter.logger.info(Consts.TAG, "Thread production, name is [" + threadName + "]");
         Thread thread = new Thread(group, runnable, threadName, 0);
         if (thread.isDaemon()) {   //设为非后台线程
             thread.setDaemon(false);
@@ -41,7 +40,6 @@ public class DefaultThreadFactory implements ThreadFactory {
         thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread thread, Throwable ex) {
-//                ARouter.logger.info(Consts.TAG, "Running task appeared exception! Thread [" + thread.getName() + "], because [" + ex.getMessage() + "]");
             }
         });
         return thread;

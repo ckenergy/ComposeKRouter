@@ -49,7 +49,6 @@ public class DefaultPoolExecutor extends ThreadPoolExecutor {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, new RejectedExecutionHandler() {
             @Override
             public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-//                ARouter.logger.error(Consts.TAG, "Task rejected, too many task!");
             }
         });
     }
@@ -73,9 +72,6 @@ public class DefaultPoolExecutor extends ThreadPoolExecutor {
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt(); // ignore/reset
             }
-        }
-        if (t != null) {
-//            ARouter.logger.warning(Consts.TAG, "Running task appeared exception! Thread [" + Thread.currentThread().getName() + "], because [" + t.getMessage() + "]\n" + TextUtils.formatStackTrace(t.getStackTrace()));
         }
     }
 }

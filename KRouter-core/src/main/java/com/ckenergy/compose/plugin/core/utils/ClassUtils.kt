@@ -67,7 +67,7 @@ object ClassUtils {
                         }
                     }
                 } catch (ignore: Throwable) {
-                    Log.e("ARouter", "Scan map file in dex files made error.", ignore)
+                    Log.e("KRouter", "Scan map file in dex files made error.", ignore)
                 } finally {
                     if (null != dexfile) {
                         try {
@@ -118,7 +118,7 @@ object ClassUtils {
                         }
                     }
                 } catch (ignore: Throwable) {
-                    Log.e("ARouter", "Scan map file in dex files made error.", ignore)
+                    Log.e("KRouter", "Scan map file in dex files made error.", ignore)
                 } finally {
                     if (null != dexfile) {
                         try {
@@ -176,9 +176,6 @@ object ClassUtils {
             }
         }
 
-//        if (ARouter.debuggable()) { // Search instant run support only debuggable
-//            sourcePaths.addAll(tryLoadInstantRunDexFile(applicationInfo));
-//        }
         return sourcePaths
     }
 
