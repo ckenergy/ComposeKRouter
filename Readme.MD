@@ -2,7 +2,7 @@
 
 [中文文档](Readme-CN.MD)
 
-### how to use (last_version = "1.0.0")
+### how to use (last_version = "1.0.1")
 
 #### 1、add dependencies
 root build.gradle
@@ -45,7 +45,7 @@ NavHost() {
 #### 3、add in NavHost
 ``` kotlin
 NavHost() {
-    NavGraphManager.initKRouter(this, navController) {
+    NavGraphManager.initKRouter(context, this, navController) {
         notFindPage = { route: String -> NotFindPage(route) }
     }
 }

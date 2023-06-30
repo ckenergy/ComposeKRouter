@@ -1,6 +1,6 @@
 ## ComposeKRouter组件化路由框架
 
-### 使用方式 (last_version = "1.0.0")
+### 使用方式 (last_version = "1.0.1")
 
 #### 1、添加依赖
 root build.gradle
@@ -42,7 +42,7 @@ NavHost() {
 #### 3、在NavHost初始化
 ``` kotlin
 NavHost() {
-    NavGraphManager.initKRouter(this, navController) {
+    NavGraphManager.initKRouter(context, this, navController) {
         notFindPage = { route: String -> NotFindPage(route) }
     }
 }
