@@ -58,3 +58,29 @@ controller.navigateRoute(ComposeRouterMapper.Second) {
     put("testBean", TestBean(1.5f, false))
 }
 ```
+
+
+#### 5、Custom registration route **composeModules**
+When your compose page parameters are more complex, such as parameter is function
+``` kotlin
+@Composable
+fun OtherPage(start: () -> Unit)
+```
+At this time, you need to customize your own to register the route
+``` kotlin
+val navGraph = composeModules { controller ->
+    packageName = "com.ckenergy.compose.other"
+    composable(ComposeRouterMapper.Other) {
+        OtherPage {
+            controller.navigateRoute(ComposeRouterMapper.Second)
+        }
+    }
+}
+
+NavGraphManager.initKRouter(context, this, navController) {
+    notFindPage = { route: String -> NotFindPage(route) }
+    isAnimation = true
+    isDebug = BuildConfig.DEBUG
+    addModules(navGraph)//add route map
+}
+```

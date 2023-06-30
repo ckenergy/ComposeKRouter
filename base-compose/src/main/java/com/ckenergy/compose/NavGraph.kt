@@ -65,7 +65,7 @@ fun NavGraph(
             )
         },
     ) {
-        NavGraphManager.initKRouter(context.applicationContext as Application, this, navController) {
+        NavGraphManager.initKRouter(context, this, navController) {
             pluginLoader = object : IPluginLoader {
                 override fun load(route: String, controller: NavController, builder: NavGraphBuilder) {
 //                    composablePlugIn(controller, libNavGraph)

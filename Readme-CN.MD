@@ -55,3 +55,28 @@ controller.navigateRoute(ComposeRouterMapper.Second) {
     put("testBean", TestBean(1.5f, false))
 }
 ```
+
+#### 5、自定义注册路由**composeModules**
+当你的compose页面参数比较复杂，比如参数是函数之类的
+``` kotlin
+@Composable
+fun OtherPage(start: () -> Unit)
+```
+这时就需要自己自定义去注册路由
+``` kotlin
+val navGraph = composeModules { controller ->
+    packageName = "com.ckenergy.compose.other"
+    composable(ComposeRouterMapper.Other) {
+        OtherPage {
+            controller.navigateRoute(ComposeRouterMapper.Second)
+        }
+    }
+}
+
+NavGraphManager.initKRouter(context, this, navController) {
+    notFindPage = { route: String -> NotFindPage(route) }
+    isAnimation = true
+    isDebug = BuildConfig.DEBUG
+    addModules(navGraph)//手动添加路由表
+}
+```
