@@ -1,6 +1,7 @@
 package com.ckenergy.compose.plugin
 
 import android.app.Application
+import com.ckenergy.compose.plugin.core.NavGraphManager
 
 /**
  * @author ckenergy
@@ -11,6 +12,7 @@ class MyApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
+//        NavGraphManager.registerDex(this)
     }
 
 }

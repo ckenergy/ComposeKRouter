@@ -1,15 +1,23 @@
 package com.ckenergy.compose.plugin.core
 
 import android.app.Application
+import android.content.Context
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.core.net.toUri
 import androidx.navigation.*
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.composable
+import com.ckenergy.compose.plugin.core.utils.ClassUtils
+import com.ckenergy.compose.plugin.core.utils.Constants
+import com.ckenergy.compose.plugin.core.utils.Constants.ROUTER_SP_CACHE_KEY
+import com.ckenergy.compose.plugin.core.utils.Constants.ROUTER_SP_KEY_MAP
+import com.ckenergy.compose.plugin.core.utils.PackageUtils
 import com.google.accompanist.navigation.animation.AnimatedComposeNavigator
 import java.net.URLEncoder
 
+private const val TAG = "NavGraphManager"
 /**
  * @author ckenergy
  * @date 2023/2/15
@@ -17,6 +25,8 @@ import java.net.URLEncoder
  * 然后在 [Application.onCreate]添加[composeModules] 方法往里面添加各模块实现了[composeModules]接口的实例
  */
 object NavGraphManager {
+
+    private var context: Application? = null
 
     private val graphContainer = hashSetOf<ModuleBuilder>()
 
@@ -28,6 +38,10 @@ object NavGraphManager {
 
     var isAnimation = true
 
+    var isDebug = false
+
+    private var hasRegister = false
+
     private lateinit var builder: NavGraphBuilder
 
     init {
@@ -36,6 +50,54 @@ object NavGraphManager {
     }
 
     private fun registerMap() {
+        hasRegister = false
+        // addModules(baseNavGraph) asm inject
+        // hasRegister = true
+    }
+
+    @JvmStatic
+    fun registerDex(context: Application) {
+        Log.d(TAG, "registerDex hasRegister:$hasRegister")
+        if (hasRegister) {
+            return
+        }
+        synchronized(this) {
+            if (hasRegister) {
+                return
+            }
+            val startTime = System.currentTimeMillis()
+            try {
+                val classSet: List<Class<*>>?
+                if (isDebug || PackageUtils.isNewVersion(context)) {
+                    classSet = ClassUtils.getFileNameByName(context, Constants.NAVGRAPH_CLASS).map { Class.forName(it) }.filter {
+                        INavGraphProvider::class.java.isAssignableFrom(it) && it != INavGraphProvider::class.java
+                    }
+
+                    val nameSet = classSet.map { it.canonicalName }.toSet()
+                    context.getSharedPreferences(ROUTER_SP_CACHE_KEY, Context.MODE_PRIVATE).edit()
+                        .putStringSet(ROUTER_SP_KEY_MAP, nameSet).apply()
+                    Log.d(TAG, "find in dex class:$nameSet")
+                    PackageUtils.updateVersion(context)
+                }else {
+                    val nameSet = context.getSharedPreferences(
+                        ROUTER_SP_CACHE_KEY,
+                        Context.MODE_PRIVATE
+                    ).getStringSet(ROUTER_SP_KEY_MAP, HashSet<String>())
+                    Log.d(TAG, "load from cache class:$nameSet")
+                    classSet = nameSet?.map { Class.forName(it) }
+                }
+
+                if (!classSet.isNullOrEmpty())
+                    for (clazz in classSet) {
+                        clazz.getDeclaredMethod(Constants.REGISTER_NAME, NavGraphManager::class.java).invoke(null, NavGraphManager)
+                    }
+            }catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            Log.d(TAG, "registerDex time:${System.currentTimeMillis() - startTime}")
+            hasRegister = true
+        }
 
     }
 
@@ -49,12 +111,15 @@ object NavGraphManager {
     /**
      * 加载配置好的路由模块
      */
-    @OptIn(ExperimentalAnimationApi::class)
     fun initKRouter(
+        context: Context,
         builder: NavGraphBuilder,
         controller: NavController,
         action: NavGraphManager.() -> Unit
     ) {
+        val application = context.applicationContext as Application
+        this.context = application
+        registerDex(application)
         this.builder = builder
         action(NavGraphManager)
         graphContainer.forEach {

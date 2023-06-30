@@ -22,6 +22,8 @@ class RegisterKRouteMethodVisitor(
             mv.visitVarInsn(ALOAD, 0)
             mv.visitMethodInsn(INVOKESTATIC, it.replace(".", "/"), ScanSetting.REGISTER_METHOD_NAME, "(L${ScanSetting.GENERATE_TO_CLASS_NAME};)V", false)
         }
+        mv.visitLdcInsn(1)
+        mv.visitFieldInsn(PUTSTATIC, "com/ckenergy/compose/plugin/core/NavGraphManager", "hasRegister", "Z")
     }
 
 }
