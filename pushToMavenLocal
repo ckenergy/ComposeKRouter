@@ -1,0 +1,5 @@
+#!/bin/bash
+export JAVA_HOME='/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home'
+./gradlew KRouter-core:publishToMavenLocal
+./gradlew KRouter-compiler:publishToMavenLocal
+./gradlew :plugin:KRoutePlugin:publishToMavenLocal

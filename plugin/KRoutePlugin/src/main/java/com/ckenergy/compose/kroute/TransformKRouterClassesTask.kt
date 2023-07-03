@@ -3,6 +3,7 @@ package com.ckenergy.compose.kroute
 import com.ckenergy.compose.kroute.utils.InjectUtils
 import com.ckenergy.compose.kroute.utils.ScanSetting
 import com.ckenergy.compose.kroute.utils.ScanUtils
+import org.apache.commons.io.IOUtils
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.Directory
 import org.gradle.api.file.RegularFile
@@ -19,6 +20,8 @@ import java.io.InputStream
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
 import java.util.jar.JarOutputStream
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
 
 abstract class TransformKRouterClassesTask : DefaultTask() {
 
@@ -49,34 +52,39 @@ abstract class TransformKRouterClassesTask : DefaultTask() {
         var originInject: ByteArray? = null
         allJars.get().forEach { file ->
 //            log("handling " + file.asFile.getAbsolutePath())
-            val jarFile = JarFile(file.asFile)
-            jarFile.entries().iterator().forEach { entry ->
-//                log("Adding from jar ${entry.name}")
+            val zipFile = ZipFile(file.asFile)
+            val enumeration = zipFile.entries()
+            while (enumeration.hasMoreElements()) {
                 try {
+                    val entry = enumeration.nextElement()
                     if (!entry.isDirectory) {
                         if (entry.name != ScanSetting.GENERATE_TO_CLASS_FILE_NAME) {
                             // Scan and choose
                             if (ScanUtils.shouldProcessClass(entry.name)) {
-                                jarFile.getInputStream(entry).use { inputs ->
+                                zipFile.getInputStream(entry).use { inputs ->
                                     ScanUtils.scanClass(inputs, targetList, false)
                                 }
                             }
                             // Copy
-                            jarOutput.saveEntry(entry.name, jarFile.getInputStream(entry))
+                            jarOutput.saveEntry(entry.name, zipFile.getInputStream(entry))
                         } else {
                             // Skip
 //                            log("Find inject byte code, Skip ${entry.name}")
-                            jarFile.getInputStream(entry).use { inputs ->
+                            zipFile.getInputStream(entry).use { inputs ->
                                 originInject = inputs.readAllBytes()
                                 // println("Find before originInject is ${originInject?.size}")
                             }
                         }
                     }
                 } catch (e: Exception) {
-//                    log(e.stackTraceToString())
+                    log(e.stackTraceToString())
                 }
             }
-            jarFile.close()
+            try {
+                zipFile.close()
+            } catch (e: Exception) {
+                log("close stream err!")
+            }
         }
         allDirectories.get().forEach { directory ->
 //            log("handling " + directory.asFile.getAbsolutePath())
@@ -114,7 +122,8 @@ abstract class TransformKRouterClassesTask : DefaultTask() {
     private fun JarOutputStream.saveEntry(entryName: String, inputStream: InputStream) {
         this.putNextEntry(JarEntry(entryName))
         inputStream.use {
-            it.copyTo(this)
+            IOUtils.copy(it, this)
+//            it.copyTo(this)
         }
         this.closeEntry()
     }
