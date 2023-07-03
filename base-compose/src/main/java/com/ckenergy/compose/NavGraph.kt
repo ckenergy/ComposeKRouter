@@ -16,8 +16,8 @@ import androidx.navigation.compose.NavHost
 import com.ckenergy.base.compose.BuildConfig
 //import androidx.navigation.compose.composable
 import com.ckenergy.compose.common.ComposeRouterMapper
-import com.ckenergy.compose.plugin.core.IPluginLoader
-import com.ckenergy.compose.plugin.core.NavGraphManager
+import com.ckenergy.compose.krouter.core.IPluginLoader
+import com.ckenergy.compose.krouter.core.NavGraphManager
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 import com.google.accompanist.navigation.animation.composable
 

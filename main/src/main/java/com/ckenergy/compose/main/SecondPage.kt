@@ -19,11 +19,11 @@ import androidx.navigation.NavController
 import com.ckenergy.compose.AppNavController
 import com.ckenergy.compose.MyContent
 import com.ckenergy.compose.common.ComposeRouterMapper
-import com.ckenergy.compose.plugin.core.KRouter
-import com.ckenergy.compose.plugin.core.ModuleBuilder
-import com.ckenergy.compose.plugin.core.NavGraphManager
-import com.ckenergy.compose.plugin.core.PluginManager
-import com.ckenergy.compose.plugin.core.navigateRoute
+import com.ckenergy.compose.krouter.core.KRouter
+import com.ckenergy.compose.krouter.core.ModuleBuilder
+import com.ckenergy.compose.krouter.core.NavGraphManager
+import com.ckenergy.compose.krouter.core.PluginManager
+import com.ckenergy.compose.krouter.core.navigateRoute
 import java.io.File
 
 /**

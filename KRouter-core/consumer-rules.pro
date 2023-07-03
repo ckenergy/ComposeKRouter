@@ -1,4 +1,4 @@
--keep class * implements com.ckenergy.compose.plugin.core.INavGraphProvider{*;}
+-keep class * implements com.ckenergy.compose.krouter.core.INavGraphProvider{*;}
 ################################### keep ###################################
 
 -keep,allowobfuscation @interface androidx.annotation.Keep

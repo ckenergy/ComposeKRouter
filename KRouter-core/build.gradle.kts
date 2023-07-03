@@ -8,7 +8,7 @@ apply {
 }
 
 android {
-    namespace = "com.ckenergy.compose.plugin.core"
+    namespace = "com.ckenergy.compose.krouter.core"
     compileSdk = Versions.compileSdk
 
     defaultConfig {

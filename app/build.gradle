@@ -5,13 +5,22 @@ plugins {
 }
 
 android {
-    namespace 'com.ckenergy.compose.plugin'
+    namespace 'com.ckenergy.compose.krouter'
     compileSdk = Versions.compileSdk
+
+    signingConfigs {
+        config {
+            storeFile file("test.jks")
+            storePassword '123456'
+            keyAlias 'test'
+            keyPassword '123456'
+        }
+    }
 
     defaultConfig {
         minSdk = Versions.minSdk
         targetSdk = Versions.targetSdk
-        applicationId "com.ckenergy.compose.plugin"
+        applicationId "com.ckenergy.compose.krouter"
         versionCode 1
         versionName "1.0"
 
@@ -20,11 +29,16 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+        debug {
+            signingConfig signingConfigs.config
         }
     }
     lint {
+        false
         baseline = file("lint-baseline.xml")
     }
     compileOptions {

@@ -11,7 +11,7 @@ class ScanSetting(_interfaceName: String) {
     val interfaceName: String
 
     init {
-        interfaceName = "com/ckenergy/compose/plugin/core/$_interfaceName"
+        interfaceName = "com/ckenergy/compose/krouter/core/$_interfaceName"
     }
 
     /**
@@ -27,7 +27,7 @@ class ScanSetting(_interfaceName: String) {
         /**
          * The register code is generated into this class
          */
-        const val GENERATE_TO_CLASS_NAME = "com/ckenergy/compose/plugin/core/NavGraphManager"
+        const val GENERATE_TO_CLASS_NAME = "com/ckenergy/compose/krouter/core/NavGraphManager"
 
         /**
          * you know. this is the class file(or entry in jar file) name

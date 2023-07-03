@@ -2,4 +2,4 @@
 export JAVA_HOME='/Library/Java/JavaVirtualMachines/jdk-11.0.2.jdk/Contents/Home'
 ./gradlew KRouter-core:publish
 ./gradlew KRouter-compiler:publish
-./gradlew :plugin:KRoutePlugin:publish
+./gradlew :plugin:KRoutePlugin:publishReleasePublicationToMavenRepository

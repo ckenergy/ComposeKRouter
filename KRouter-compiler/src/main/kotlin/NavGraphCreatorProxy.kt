@@ -11,11 +11,11 @@ import java.util.Locale
  */
 class NavGraphCreatorProxy(private val logBuilder: StringBuilder) {
 
-    private val moduleMemberName = MemberName("com.ckenergy.compose.plugin.core", "composeModules")
-    private val managerClassName = ClassName("com.ckenergy.compose.plugin.core", "NavGraphManager")
-    private val providerClassName = ClassName("com.ckenergy.compose.plugin.core", "INavGraphProvider")
-    private val getArguments = MemberName("com.ckenergy.compose.plugin.core", "getArguments")
-    private val parseArguments = MemberName("com.ckenergy.compose.plugin.core", "parseArguments")
+    private val moduleMemberName = MemberName("com.ckenergy.compose.krouter.core", "composeModules")
+    private val managerClassName = ClassName("com.ckenergy.compose.krouter.core", "NavGraphManager")
+    private val providerClassName = ClassName("com.ckenergy.compose.krouter.core", "INavGraphProvider")
+    private val getArguments = MemberName("com.ckenergy.compose.krouter.core", "getArguments")
+    private val parseArguments = MemberName("com.ckenergy.compose.krouter.core", "parseArguments")
 
     /**
      * 创建Java代码

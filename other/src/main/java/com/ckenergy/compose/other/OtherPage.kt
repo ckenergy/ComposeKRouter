@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ckenergy.compose.AppNavController
 import com.ckenergy.compose.MyContent
-import com.ckenergy.compose.plugin.core.PluginManager
+import com.ckenergy.compose.krouter.core.PluginManager
 
 /**
  * @author ckenergy
