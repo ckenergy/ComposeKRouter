@@ -77,7 +77,7 @@ abstract class TransformKRouterClassesTask : DefaultTask() {
                         }
                     }
                 } catch (e: Exception) {
-                    log(e.stackTraceToString())
+//                    log(e.stackTraceToString())
                 }
             }
             try {
