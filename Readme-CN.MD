@@ -11,6 +11,10 @@ dependencies {
 ```
 app build.gradle
 ``` groovy
+plugins {
+    id 'KRoute-plugin'
+}
+
 implementation("io.github.ckenergy:kRouter-core:$KRouter_version")
 ```
 使用到@KRouter注解的module build.gradle

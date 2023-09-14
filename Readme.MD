@@ -13,6 +13,10 @@ dependencies {
 ```
 app build.gradle
 ``` groovy
+plugins {
+    id 'KRoute-plugin'
+}
+
 implementation("io.github.ckenergy:kRouter-core:$KRouter_version")
 ```
 add in module build.gradle where use @KRouter
