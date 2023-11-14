@@ -3,7 +3,6 @@ package com.ckenergy.compose.kroute
 import com.ckenergy.compose.kroute.utils.ScanSetting
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.MethodVisitor
-import org.objectweb.asm.Opcodes
 
 /**
  * Created by chengkai on 2023/1/19.

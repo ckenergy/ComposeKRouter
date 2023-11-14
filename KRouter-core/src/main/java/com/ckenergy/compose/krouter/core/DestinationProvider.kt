@@ -32,7 +32,16 @@ fun getArguments(): MutableList<NamedNavArgument> {
 }
 
 inline fun <reified T> NavBackStackEntry.parseArguments(): T? {
-    return arguments?.getString(argName)?.let {
-        S_GSON.fromJson(URLDecoder.decode(it, "utf-8"), T::class.java)
+    val data = arguments?.getString(argName)
+    return data?.let {
+        var t = kotlin.runCatching {
+            S_GSON.fromJson(data, T::class.java)
+        }.getOrNull()
+        if (t == null) {
+            t = kotlin.runCatching {
+                S_GSON.fromJson(URLDecoder.decode(it, "utf-8"), T::class.java)
+            }.getOrNull()
+        }
+        t
     }
 }

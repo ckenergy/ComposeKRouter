@@ -2,7 +2,7 @@
 
 [中文文档](Readme-CN.MD)
 
-### how to use (last_version = "1.0.4")
+### how to use (last_version = "1.0.5")
 
 #### 1、add dependencies
 root build.gradle

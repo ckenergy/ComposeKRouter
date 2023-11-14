@@ -37,7 +37,7 @@ fun MainPage() {
                 .clickable {
                     controller.navigateRoute(ComposeRouterMapper.Second) {
                         put("int", 1)
-//                        put("string", "test")
+                        put("string", "WhUhD++dNW/ePH")
                         put("long", longArrayOf(1L, 3L))
                         put("testBean", TestBean(1.5f, false))
                     }
