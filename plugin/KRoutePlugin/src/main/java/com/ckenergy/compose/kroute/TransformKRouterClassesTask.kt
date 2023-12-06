@@ -1,6 +1,7 @@
 package com.ckenergy.compose.kroute
 
 import com.ckenergy.compose.kroute.utils.InjectUtils
+import com.ckenergy.compose.kroute.utils.RouterUtil
 import com.ckenergy.compose.kroute.utils.ScanSetting
 import com.ckenergy.compose.kroute.utils.ScanUtils
 import org.apache.commons.io.IOUtils
@@ -46,17 +47,18 @@ abstract class TransformKRouterClassesTask : DefaultTask() {
             )
         )
 
+        val filterAllJar = RouterUtil.filterJetifiedJar(allJars.get().map { file -> file.asFile })
         val targetList: List<ScanSetting> = listOf(
             ScanSetting("INavGraphProvider"),
         )
         var originInject: ByteArray? = null
-        allJars.get().forEach { file ->
+        filterAllJar.forEach { file ->
 //            log("handling " + file.asFile.getAbsolutePath())
-            val zipFile = ZipFile(file.asFile)
+            val zipFile = ZipFile(file)
             val enumeration = zipFile.entries()
             while (enumeration.hasMoreElements()) {
+                val entry = enumeration.nextElement()
                 try {
-                    val entry = enumeration.nextElement()
                     if (!entry.isDirectory) {
                         if (entry.name != ScanSetting.GENERATE_TO_CLASS_FILE_NAME) {
                             // Scan and choose
@@ -77,6 +79,11 @@ abstract class TransformKRouterClassesTask : DefaultTask() {
                         }
                     }
                 } catch (e: Exception) {
+                    if (!entry.name.contains("META-INF")) {
+                        throw e
+                    }else{
+//                    Log.i("TransformYApmClassesTask", "${e.message},file:${entry.name}")
+                    }
 //                    log(e.stackTraceToString())
                 }
             }
@@ -87,10 +94,10 @@ abstract class TransformKRouterClassesTask : DefaultTask() {
             }
         }
         allDirectories.get().forEach { directory ->
-//            log("handling " + directory.asFile.getAbsolutePath())
+            log("handling " + directory.asFile.absolutePath)
             directory.asFile.walk().forEach { file ->
                 if (file.isFile) {
-//                    log("Found $file.name")
+//                    log("Found ${file.absoluteFile}")
                     val relativePath = directory.asFile.toURI().relativize(file.toURI()).getPath()
 //                    log("Adding from directory ${relativePath.replace(File.separatorChar, '/')}")
                     if (ScanUtils.shouldProcessClass(file.name)) {

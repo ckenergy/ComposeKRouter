@@ -1,6 +1,6 @@
 ## ComposeKRouter组件化路由框架
 
-### 使用方式 (last_version = "1.0.5")
+### 使用方式 (last_version = "1.0.6")
 
 #### 1、添加依赖
 root build.gradle
