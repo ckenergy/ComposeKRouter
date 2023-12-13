@@ -1,5 +1,6 @@
 package com.ckenergy.compose.krouter.core
 
+import android.net.Uri
 import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavType
@@ -18,7 +19,8 @@ const val argName = "args"
 object DestinationProvider {
 
     fun getDestination(route1: String, source: Any): String {
-        return "${route1}/${URLEncoder.encode(S_GSON.toJson(source), "utf-8")}"
+        val data = Uri.encode(S_GSON.toJson(source), "utf-8")
+        return "${route1}/${data}"
     }
 
 }
@@ -39,7 +41,7 @@ inline fun <reified T> NavBackStackEntry.parseArguments(): T? {
         }.getOrNull()
         if (t == null) {
             t = kotlin.runCatching {
-                S_GSON.fromJson(URLDecoder.decode(it, "utf-8"), T::class.java)
+                S_GSON.fromJson(Uri.encode(it, "utf-8"), T::class.java)
             }.getOrNull()
         }
         t
